@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+    <h2>{{ header }}</h2>
+    <br>
+
+    <strong>Actions: </strong>
+    <a href="edit">Edit Author</a> - <a href="books">See Books</a>
+
+    <p><b>Name: </b>{{ author.name }}</p>
+    <p><b>Email: </b><a href="mailto:{{ author.email }}">{{ author.email }}</a></p>
+
+{% endblock %}
