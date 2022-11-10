@@ -30,7 +30,7 @@ class Pilot(models.Model):
     contract = models.IntegerField()
     entry_year = models.IntegerField()
     team = models.ForeignKey(Team, on_delete=models.CASCADE)
-    country = models.ManyToManyField(Country, on_delete=models.CASCADE)
+    country = models.ManyToManyField(Country)
     def __str__(self):
         return self.name
 

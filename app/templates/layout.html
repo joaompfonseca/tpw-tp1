@@ -27,10 +27,13 @@
     <div class="collapse navbar-collapse" id="navbarDefault">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'drivers_list' %}">Drivers</a>
+                <a class="nav-link" href="{% url 'pilots_list' %}">Pilots</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'teams_list' %}">Teams</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'teamleaders_list' %}">Teams</a>
             </li>
         </ul>
         {% include 'loginpartial.html' %}
