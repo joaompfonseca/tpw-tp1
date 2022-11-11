@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 
 from app.models import Circuit, Race, Result, Team, TeamLeader, Pilot
-from app.forms import PilotForm, PilotSearchForm, TeamForm, TeamSearchForm, TeamLeaderSearchForm, TeamLeaderForm
+from app.forms import PilotForm, PilotSearchForm, TeamForm, TeamSearchForm, TeamLeaderSearchForm, TeamLeaderForm, \
+    CircuitSearchForm, CircuitForm, RaceSearchForm, RaceForm, ResultSearchForm, ResultForm
 
 
 # Create your views here.
@@ -291,88 +292,273 @@ def teamleaders_edit(req, _id):
 
 
 # - Circuit
-def circuit_list(req):
-    circuits = Team.objects.all()
-    actions = [{'str': 'Search Circuit', 'url': '/teams/search'},
-               {'str': 'New Circuit', 'url': '/teams/new'}]
-    lst = [[{'str': c.name, 'url': f'/teams/{c.id}', 'length': c.length,
-             'location': c.location, 'fast_lap': c.fast_lap, 'last_winner': c.last_winner}] for c in circuits]
+def circuits_list(req):
+    circuits = Circuit.objects.all()
+    actions = [{'str': 'Search Circuit', 'url': '/circuits/search'},
+               {'str': 'New Circuit', 'url': '/circuits/new'}]
+    lst = [[{'str': c.name, 'url': f'/circuits/{c.id}'}] for c in circuits]
 
-    ctx = {'header': 'List of Teams', 'actions': actions, 'list': lst}
+    ctx = {'header': 'List of Circuits', 'actions': actions, 'list': lst}
     return render(req, 'list.html', ctx)
 
 
-def circuit_search(req):
+def circuits_search(req):
     # If POST request, process form data
     if req.method == 'POST':
         # Create a form instance and pass data to it
-        form = TeamSearchForm(req.POST)
+        form = CircuitSearchForm(req.POST)
         if form.is_valid():
             name = form.cleaned_data['name']
 
-            query = f'Team.name={name}'
+            query = f'Circuit.name={name}'
             # if 'searched' in req.session and req.session['searched'] == query:
             #     return HttpResponse('You have searched for the same thing before. Please try again.')
             # req.session['searched'] = query
 
-            teams = Team.objects.filter(name__icontains=name)
+            circuits = Circuit.objects.filter(name__icontains=name)
 
-            lst = [[{'str': t.name, 'url': f'/teams/{t.id}'}]
-                   for t in teams]
-            ctx = {'header': 'List of Teams', 'list': lst, 'query': query}
+            lst = [[{'str': c.name, 'url': f'/circuits/{c.id}'}]
+                   for c in circuits]
+            ctx = {'header': 'List of Circuits', 'list': lst, 'query': query}
             return render(req, 'list.html', ctx)
     else:
         # If GET (or any other method), create blank form
-        form = TeamSearchForm()
-        ctx = {'header': 'Search Team', 'form': form}
+        form = CircuitSearchForm()
+        ctx = {'header': 'Search Circuit', 'form': form}
         return render(req, 'search.html', ctx)
 
 
-def circuit_get(req, _id):
-    team = Team.objects.get(id=_id)
+def circuits_get(req, _id):
+    circuit = Circuit.objects.get(id=_id)
 
-    ctx = {'header': 'Team Details', 'team': team}
-    return render(req, 'team.html', ctx)
+    ctx = {'header': 'Circuit Details', 'circuit': circuit}
+    return render(req, 'circuit.html', ctx)
 
 
-def circuit_new(req):
+def circuits_new(req):
     if not req.user.is_authenticated or req.user.username != 'admin':
         return redirect('login')
     if req.method == 'POST':
-        form = TeamForm(req.POST)
+        form = CircuitForm(req.POST)
         if form.is_valid():
-            Team.objects.create(
+            Circuit.objects.create(
                 name=form.cleaned_data['name'],
-                date=form.cleaned_data['date'],
-                championships=form.cleaned_data['championships']
+                length=form.cleaned_data['length'],
+                location=form.cleaned_data['location'],
+                fast_lap=form.cleaned_data['fast_lap'],
+                last_winner=form.cleaned_data['last_winner'],
+                country=form.cleaned_data['country'],
             )
 
-            return redirect('teams_list')
+            return redirect('circuits_list')
     else:
-        form = TeamForm()
-        ctx = {'header': 'New Team', 'form': form}
+        form = CircuitForm()
+        ctx = {'header': 'New Circuit', 'form': form}
         return render(req, 'new.html', ctx)
 
 
-def circuit_edit(req, _id):
+def circuits_edit(req, _id):
     if not req.user.is_authenticated or req.user.username != 'admin':
         return redirect('login')
-    team = Team.objects.get(id=_id)
+    circuit = Circuit.objects.get(id=_id)
     if req.method == 'POST':
-        form = TeamForm(req.POST)
+        form = CircuitForm(req.POST)
         if form.is_valid():
-            team.name = form.cleaned_data['name']
-            team.date = form.cleaned_data['date']
-            team.championships = form.cleaned_data['championships']
-            team.save()
+            circuit.name = form.cleaned_data['name']
+            circuit.length = form.cleaned_data['length']
+            circuit.location = form.cleaned_data['location']
+            circuit.fast_lap = form.cleaned_data['fast_lap']
+            circuit.last_winner = form.cleaned_data['last_winner']
+            circuit.country = form.cleaned_data['country']
+            circuit.save()
 
-            return redirect('teams_get', _id=_id)
+            return redirect('circuits_get', _id=_id)
     else:
-        form = TeamForm(initial={
-            'name': team.name,
-            'date': team.date,
-            'championships': team.championships
+        form = CircuitForm(initial={
+            'name': circuit.name,
+            'length': circuit.length,
+            'location': circuit.location,
+            'fast_lap': circuit.fast_lap,
+            'last_winner': circuit.last_winner,
+            'country': circuit.country.id
         })
-        ctx = {'header': 'Edit Team', 'form': form}
+        ctx = {'header': 'Edit Circuit', 'form': form}
+        return render(req, 'edit.html', ctx)
+
+
+# - Race
+def races_list(req):
+    races = Race.objects.all()
+    actions = [{'str': 'Search Race', 'url': '/races/search'},
+               {'str': 'New Race', 'url': '/races/new'}]
+    lst = [[{'str': r.name, 'url': f'/races/{r.id}'}] for r in races]
+
+    ctx = {'header': 'List of Races', 'actions': actions, 'list': lst}
+    return render(req, 'list.html', ctx)
+
+
+def races_search(req):
+    # If POST request, process form data
+    if req.method == 'POST':
+        # Create a form instance and pass data to it
+        form = RaceSearchForm(req.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            query = f'Race.name={name}'
+            # if 'searched' in req.session and req.session['searched'] == query:
+            #     return HttpResponse('You have searched for the same thing before. Please try again.')
+            # req.session['searched'] = query
+
+            races = Race.objects.filter(name__icontains=name)
+
+            lst = [[{'str': r.name, 'url': f'/races/{r.id}'}]
+                   for r in races]
+            ctx = {'header': 'List of Races', 'list': lst, 'query': query}
+            return render(req, 'list.html', ctx)
+    else:
+        # If GET (or any other method), create blank form
+        form = RaceSearchForm()
+        ctx = {'header': 'Search Race', 'form': form}
+        return render(req, 'search.html', ctx)
+
+
+def races_get(req, _id):
+    race = Race.objects.get(id=_id)
+
+    ctx = {'header': 'Race Details', 'race': race}
+    return render(req, 'race.html', ctx)
+
+
+def races_new(req):
+    if not req.user.is_authenticated or req.user.username != 'admin':
+        return redirect('login')
+    if req.method == 'POST':
+        form = RaceForm(req.POST)
+        if form.is_valid():
+            Race.objects.create(
+                name=form.cleaned_data['name'],
+                date=form.cleaned_data['date'],
+                season=form.cleaned_data['season'],
+                circuit=form.cleaned_data['circuit'],
+            )
+
+            return redirect('races_list')
+    else:
+        form = RaceForm()
+        ctx = {'header': 'New Race', 'form': form}
+        return render(req, 'new.html', ctx)
+
+
+def races_edit(req, _id):
+    if not req.user.is_authenticated or req.user.username != 'admin':
+        return redirect('login')
+    race = Race.objects.get(id=_id)
+    if req.method == 'POST':
+        form = RaceForm(req.POST)
+        if form.is_valid():
+            race.name = form.cleaned_data['name']
+            race.date = form.cleaned_data['date']
+            race.season = form.cleaned_data['season']
+            race.circuit = form.cleaned_data['circuit']
+
+            race.save()
+
+            return redirect('races_get', _id=_id)
+    else:
+        form = RaceForm(initial={
+            'name': race.name,
+            'date': race.date,
+            'season': race.season,
+            'circuit': race.circuit.id
+        })
+        ctx = {'header': 'Edit Race', 'form': form}
+        return render(req, 'edit.html', ctx)
+
+
+# Results
+def results_list(req):
+    results = Result.objects.all()
+    actions = [{'str': 'Search Result', 'url': '/results/search'},
+               {'str': 'New Result', 'url': '/results/new'}]
+    lst = [[{'str': r.pilot, 'url': f'/results/{r.id}'}] for r in results]
+
+    ctx = {'header': 'List of Results', 'actions': actions, 'list': lst}
+    return render(req, 'list.html', ctx)
+
+
+def results_search(req):
+    # If POST request, process form data
+    if req.method == 'POST':
+        # Create a form instance and pass data to it
+        form = ResultSearchForm(req.POST)
+        if form.is_valid():
+            pilot = form.cleaned_data['pilot']
+            query = f'Result.pilot={pilot}'
+            # if 'searched' in req.session and req.session['searched'] == query:
+            #     return HttpResponse('You have searched for the same thing before. Please try again.')
+            # req.session['searched'] = query
+
+            results = Result.objects.filter(pilot__icontains=pilot)
+
+            lst = [[{'str': r.pilot, 'url': f'/results/{r.id}'}]
+                   for r in results]
+            ctx = {'header': 'List of Results', 'list': lst, 'query': query}
+            return render(req, 'list.html', ctx)
+    else:
+        # If GET (or any other method), create blank form
+        form = ResultSearchForm()
+        ctx = {'header': 'Search Result', 'form': form}
+        return render(req, 'search.html', ctx)
+
+
+def results_get(req, _id):
+    result = Result.objects.get(id=_id)
+
+    ctx = {'header': 'Result Details', 'result': result}
+    return render(req, 'result.html', ctx)
+
+
+def results_new(req):
+    if not req.user.is_authenticated or req.user.username != 'admin':
+        return redirect('login')
+    if req.method == 'POST':
+        form = ResultForm(req.POST)
+        if form.is_valid():
+            Result.objects.create(
+                position=form.cleaned_data['position'],
+                pilot=form.cleaned_data['pilot'],
+                race=form.cleaned['race'],
+                points=form.cleaned_data['points']
+            )
+
+            return redirect('results_list')
+    else:
+        form = ResultForm()
+        ctx = {'header': 'New Result', 'form': form}
+        return render(req, 'new.html', ctx)
+
+
+def results_edit(req, _id):
+    if not req.user.is_authenticated or req.user.username != 'admin':
+        return redirect('login')
+    result = Result.objects.get(id=_id)
+    if req.method == 'POST':
+        form = ResultForm(req.POST)
+        if form.is_valid():
+            result.position = form.cleaned_data['position']
+            result.pilot = form.cleaned_data['pilot']
+            result.race = form.cleaned_data['race']
+            result.points = form.cleaned_data['points']
+            result.save()
+
+            return redirect('results_get', _id=_id)
+    else:
+        form = ResultForm(initial={
+            'position': result.position,
+            'pilot': result.pilot,
+            'race': result.race,
+            'points': result.points
+        })
+        ctx = {'header': 'Edit Result', 'form': form}
         return render(req, 'edit.html', ctx)
 

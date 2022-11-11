@@ -6,9 +6,13 @@
     <br>
 
     <strong>Actions: </strong>
-    <a href="{% url 'teamleaders_edit' _id=teamleader.id %}">Edit Team Leader</a>
+    <a href="{% url 'circuits_edit' _id=circuit.id %}">Edit Circuit</a>
 
-    <p><b>Name: </b> {{ team.name }}</p>
-    <p><b>Team: </b> <a href="{% url 'teams_get' _id=teamleader.team.id %}">{{ teamleader.team.name }}</a></p>
+    <p><b>Name: </b> {{ circuit.name }}</p>
+    <p><b>Length: </b> {{ circuit.length }}</p>
+    <p><b>Location: </b> {{ circuit.location }}</p>
+    <p><b>Fast Lap: </b> {{ circuit.fast_lap }}</p>
+    <p><b>Last Winner: </b><a href="{% url 'pilots_get' _id=circuit.last_winner.id %}">{{ circuit.last_winner.name}}</a></p>
+    <p><b>Country: </b><a href="{% url 'country_get' _id=circuit.country.id %}">{{ circuit.country.designation}}</a></p>
 
 {% endblock %}

@@ -1,6 +1,6 @@
 from django import forms
 
-from app.models import Pilot, Country, Team
+from app.models import Pilot, Country, Team, Circuit, Race
 
 
 # Create your forms here.
@@ -42,3 +42,41 @@ class TeamLeaderForm(forms.Form):
 
 class TeamLeaderSearchForm(forms.Form):
     name = forms.CharField(label='Name:', max_length=70)
+
+
+class CircuitSearchForm(forms.Form):
+    name = forms.CharField(label='Name:', max_length=70)
+
+
+class CircuitForm(forms.Form):
+    name = forms.CharField(label='Name:', max_length=70)
+    length = forms.IntegerField(label='Length:')
+    location = forms.CharField(label='Location:', max_length=70)
+    fast_lap = forms.TimeField(label='Fast Lap:')
+    last_winner = forms.ModelChoiceField(label='Last Winner:', queryset=Pilot.objects.all())
+    country = forms.ModelChoiceField(label='Country:', queryset=Country.objects.all())
+
+
+class RaceForm(forms.Form):
+    name = forms.CharField(label='Name:', max_length=70)
+    date = forms.DateField(label='Date:')
+    season = forms.IntegerField(label='Season:')
+    circuit = forms.ModelChoiceField(label='Circuit:', queryset=Circuit.objects.all())
+
+
+class RaceSearchForm(forms.Form):
+    name = forms.CharField(label='Name:', max_length=70)
+
+
+class ResultForm(forms.Form):
+    position = forms.IntegerField(label='Position:')
+    pilot = forms.ModelChoiceField(label='Pilot:', queryset=Pilot.objects.all())
+    race = forms.ModelChoiceField(label='Race:', queryset=Race.objects.all())
+    points = forms.IntegerField(label='Points:')
+
+
+class ResultSearchForm(forms.Form):
+    pilot = forms.ModelChoiceField(label='Pilot:', queryset=Pilot.objects.all())
+    race = forms.ModelChoiceField(label='Race:', queryset=Race.objects.all())
+
+

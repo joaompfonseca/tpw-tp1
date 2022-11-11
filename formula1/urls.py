@@ -45,4 +45,25 @@ urlpatterns = [
     path('teamleaders/<int:_id>/', views.teamleaders_get, name='teamleaders_get'),
     path('teamleaders/new/', views.teamleaders_new, name='teamleaders_new'),
     path('teamleaders/<int:_id>/edit/', views.teamleaders_edit, name='teamleaders_edit'),
+
+    # Circuit
+    path('circuits/', views.circuits_list, name='circuits_list'),
+    path('circuits/search/', views.circuits_search, name='circuits_search'),
+    path('circuits/<int:_id>/', views.circuits_get, name='circuits_get'),
+    path('circuits/new/', views.circuits_new, name='circuits_new'),
+    path('circuits/<int:_id>/edit/', views.circuits_edit, name='circuits_edit'),
+
+    # Race
+    path('races/', views.races_list, name='races_list'),
+    path('races/search/', views.races_search, name='races_search'),
+    path('races/<int:_id>/', views.races_get, name='races_get'),
+    path('races/new/', views.races_new, name='races_new'),
+    path('races/<int:_id>/edit/', views.races_edit, name='races_edit'),
+
+    # Result
+    path('results/', views.results_list, name='results_list'),
+    path('results/search/', views.results_search, name='results_search'),
+    path('results/<int:_id>/', views.results_get, name='results_get'),
+    path('results/new/', views.results_new, name='results_new'),
+    path('results/<int:_id>/edit/', views.results_edit, name='results_edit'),
 ]
