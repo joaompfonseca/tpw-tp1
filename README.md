@@ -33,7 +33,7 @@ dependency (see [Installation](#installation) section):
 ## Running the Application
 
 - Run `source venv/bin/activate` in root to enter the virtual environment.
-- Run `python3 manage runserver` in root to start the application.
+- Run `python3 manage.py runserver` in root to start the application.
 - The application should be running on [localhost:8000](http://localhost:8000/).
 - Stop the application using `CTRL+C` in terminal.
 - Run `deactivate` in root to exit the virtual environment.
