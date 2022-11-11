@@ -30,7 +30,7 @@ class Pilot(models.Model):
     contract = models.IntegerField()
     entry_year = models.IntegerField()
     team = models.ForeignKey(Team, on_delete=models.CASCADE)
-    country = models.ManyToManyField(Country, on_delete=models.CASCADE)
+    country = models.ManyToManyField(Country)
     def __str__(self):
         return self.name
 
@@ -44,10 +44,9 @@ class Car(models.Model):
 
 class Circuit(models.Model):
     name = models.CharField(max_length=70)
-    length = models.IntegerField()
+    length = models.FloatField()
     location = models.CharField(max_length=70)
-    fast_lap = models.TimeField()
-    last_winner = models.OneToOneField(Pilot, on_delete=models.CASCADE)
+    last_winner = models.ForeignKey(Pilot, on_delete=models.CASCADE)
     country = models.ForeignKey(Country, on_delete=models.CASCADE)
     def __str__(self):
         return self.name
@@ -56,14 +55,15 @@ class Race(models.Model):
     name = models.CharField(max_length=70)
     date = models.DateField()
     season = models.IntegerField()
+    fast_lap = models.TimeField()
     circuit = models.OneToOneField(Circuit, on_delete=models.CASCADE)
     def __str__(self):
         return self.name
 
 class Result(models.Model):
     position = models.IntegerField()
-    pilot = models.OneToOneField(Pilot, on_delete=models.CASCADE)
+    pilot = models.ForeignKey(Pilot, on_delete=models.CASCADE)
     race = models.ForeignKey(Race, on_delete=models.CASCADE)
     points = models.IntegerField()
     def __str__(self):
-        return self.position
+        return str(self.position)

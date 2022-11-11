@@ -31,4 +31,17 @@ urlpatterns = [
     path('drivers/', views.drivers_list, name='drivers_list'),
     # Teams
     path('teams/', views.teams_list, name='teams_list'),
+    #Country
+    path('countries/', views.country_list, name='country_list'),
+    path('countries/new/', views.country_new, name='country_new'),
+    path('countries/search/', views.country_search, name='country_search'),
+    path('countries/<str:code>/', views.country_get, name='country_get'),
+    path('countries/<str:code>/edit/', views.country_edit, name='country_edit'),
+
+    #Car
+    path('cars/', views.car_list, name='car_list'),
+    path('cars/new/', views.car_new, name='car_new'),
+    path('cars/search/', views.car_search, name='car_search'),
+    path('cars/<str:model>/', views.car_get, name='car_get'),
+    path('cars/<str:model>/edit/', views.car_edit, name='car_edit'),
 ]

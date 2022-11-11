@@ -1,0 +1,16 @@
+{% extends "layout.html" %}
+
+{% block content %}
+    <br>
+    <h2>{{ header }}</h2>
+    <br>
+
+    <strong>Actions: </strong>
+    <a href="edit">Edit Car</a> - <a href="cars_list">See Cars</a>
+
+    <p><b>Model: </b>{{ car.model }}</p>
+    <p><b>Engine: </b>{{ car.engine }}</p>
+    <p><b>Weight: </b>{{ car.weight }}</p>
+    <p><b>Pilot: </b><a href="/pilots/{{ car.pilot.name }}">{{ car.pilot.name }}</a> </p>
+
+{% endblock %}
