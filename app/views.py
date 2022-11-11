@@ -292,29 +292,87 @@ def teamleaders_edit(req, _id):
 
 # - Circuit
 def circuit_list(req):
-    circuit_qs = Circuit.objects.all()
-    circuits_list = []
-    for circuit in circuit_qs:
-        circuits_list.append(str(circuit))
-    return circuits_list
+    circuits = Team.objects.all()
+    actions = [{'str': 'Search Circuit', 'url': '/teams/search'},
+               {'str': 'New Circuit', 'url': '/teams/new'}]
+    lst = [[{'str': c.name, 'url': f'/teams/{c.id}', 'length': c.length,
+             'location': c.location, 'fast_lap': c.fast_lap, 'last_winner': c.last_winner}] for c in circuits]
+
+    ctx = {'header': 'List of Teams', 'actions': actions, 'list': lst}
+    return render(req, 'list.html', ctx)
 
 
-def update_circuit(req, circuit, name=None, length=None, location=None, fast_lap=None, last_winner=None, country=None):
-    if name is not None:
-        circuit.name = name
-    if length is not None:
-        circuit.length = length
-    if location is not None:
-        circuit.location = location
-    if fast_lap is not None:
-        circuit.fast_lap = fast_lap
-    if last_winner is not None:
-        circuit.last_winner = last_winner
-    if country is not None:
-        circuit.country = country
-    return circuit.save()
+def circuit_search(req):
+    # If POST request, process form data
+    if req.method == 'POST':
+        # Create a form instance and pass data to it
+        form = TeamSearchForm(req.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+
+            query = f'Team.name={name}'
+            # if 'searched' in req.session and req.session['searched'] == query:
+            #     return HttpResponse('You have searched for the same thing before. Please try again.')
+            # req.session['searched'] = query
+
+            teams = Team.objects.filter(name__icontains=name)
+
+            lst = [[{'str': t.name, 'url': f'/teams/{t.id}'}]
+                   for t in teams]
+            ctx = {'header': 'List of Teams', 'list': lst, 'query': query}
+            return render(req, 'list.html', ctx)
+    else:
+        # If GET (or any other method), create blank form
+        form = TeamSearchForm()
+        ctx = {'header': 'Search Team', 'form': form}
+        return render(req, 'search.html', ctx)
 
 
-def new_circuit(req, name=None, length=None, location=None, fast_lap=None, last_winner=None, country=None):
-    circuit = Circuit(name, length, location, fast_lap, last_winner, country)
-    return circuit.save()
+def circuit_get(req, _id):
+    team = Team.objects.get(id=_id)
+
+    ctx = {'header': 'Team Details', 'team': team}
+    return render(req, 'team.html', ctx)
+
+
+def circuit_new(req):
+    if not req.user.is_authenticated or req.user.username != 'admin':
+        return redirect('login')
+    if req.method == 'POST':
+        form = TeamForm(req.POST)
+        if form.is_valid():
+            Team.objects.create(
+                name=form.cleaned_data['name'],
+                date=form.cleaned_data['date'],
+                championships=form.cleaned_data['championships']
+            )
+
+            return redirect('teams_list')
+    else:
+        form = TeamForm()
+        ctx = {'header': 'New Team', 'form': form}
+        return render(req, 'new.html', ctx)
+
+
+def circuit_edit(req, _id):
+    if not req.user.is_authenticated or req.user.username != 'admin':
+        return redirect('login')
+    team = Team.objects.get(id=_id)
+    if req.method == 'POST':
+        form = TeamForm(req.POST)
+        if form.is_valid():
+            team.name = form.cleaned_data['name']
+            team.date = form.cleaned_data['date']
+            team.championships = form.cleaned_data['championships']
+            team.save()
+
+            return redirect('teams_get', _id=_id)
+    else:
+        form = TeamForm(initial={
+            'name': team.name,
+            'date': team.date,
+            'championships': team.championships
+        })
+        ctx = {'header': 'Edit Team', 'form': form}
+        return render(req, 'edit.html', ctx)
+
