@@ -27,22 +27,28 @@
     <div class="collapse navbar-collapse" id="navbarDefault">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'pilots_list' %}">Pilots</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'teams_list' %}">Teams</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'teamleaders_list' %}">Teams</a>
+                <a class="nav-link" href="{% url 'cars_list' %}">Cars</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'circuits_list' %}">Circuits</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'countries_list' %}">Countries</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'pilots_list' %}">Pilots</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'races_list' %}">Races</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'results_list' %}">Results</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'teams_list' %}">Teams</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'teamleaders_list' %}">Team Leaders</a>
             </li>
         </ul>
         {% include 'loginpartial.html' %}

@@ -1,12 +1,12 @@
 {% extends "layout.html" %}
 
 {% block content %}
-    <br>
+
     <h2>{{ header }}</h2>
     <br>
 
     <strong>Actions: </strong>
-    <a href="edit">Edit Country</a> - <a href="countries_list">See Countries</a>
+    <a href="{% url 'countries_edit' _id=country.id %}">Edit Country</a>
 
     <p><b>Designation: </b>{{ country.designation }}</p>
     <p><b>Code: </b>{{ country.code }}</p>

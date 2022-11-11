@@ -1,17 +1,11 @@
 from django import forms
 
-from app.models import Country, Car, Pilot, Country, Team, Circuit, Race
+from app.models import *
 
 
 # Create your forms here.
 
-# Country
-class CountryForm(forms.Form):
-    designation = forms.CharField(label='Name:', max_length=50, required=True)
-    code = forms.CharField(label='Code:', max_length=3, required=True)
-
-class CountrySearchForm(forms.Form):
-    code = forms.CharField(label='Code:', max_length=3)
+# Car
 
 class CarForm(forms.Form):
     model = forms.CharField(label='Model:', max_length=70, required=True)
@@ -19,9 +13,37 @@ class CarForm(forms.Form):
     weight = forms.IntegerField(label='Weight:', required=True)
     pilot = forms.ModelChoiceField(label='Pilot:', queryset=Pilot.objects.all(), required=True)
 
+
 class CarSearchForm(forms.Form):
-    model = forms.CharField(label='Model:', max_length=70,required=False)
+    model = forms.CharField(label='Model:', max_length=70, required=False)
     pilot = forms.CharField(label='Pilot:', max_length=70, required=False)
+
+
+# Circuit
+
+class CircuitForm(forms.Form):
+    name = forms.CharField(label='Name:', max_length=70)
+    length = forms.IntegerField(label='Length:')
+    location = forms.CharField(label='Location:', max_length=70)
+    fast_lap = forms.TimeField(label='Fast Lap:')
+    last_winner = forms.ModelChoiceField(label='Last Winner:', queryset=Pilot.objects.all())
+    country = forms.ModelChoiceField(label='Country:', queryset=Country.objects.all())
+
+
+class CircuitSearchForm(forms.Form):
+    name = forms.CharField(label='Name:', max_length=70)
+
+
+# Country
+
+class CountryForm(forms.Form):
+    designation = forms.CharField(label='Name:', max_length=50, required=True)
+    code = forms.CharField(label='Code:', max_length=3, required=True)
+
+
+class CountrySearchForm(forms.Form):
+    designation = forms.CharField(label='Designation:', max_length=50)
+
 
 # Pilot
 
@@ -37,8 +59,37 @@ class PilotForm(forms.Form):
     team = forms.ModelChoiceField(label='Team:', queryset=Team.objects.all())
     country = forms.ModelMultipleChoiceField(label='Country:', queryset=Country.objects.all())
 
+
 class PilotSearchForm(forms.Form):
     name = forms.CharField(label='Name:', max_length=70)
+
+
+# Race
+
+class RaceForm(forms.Form):
+    name = forms.CharField(label='Name:', max_length=70)
+    date = forms.DateField(label='Date:')
+    season = forms.IntegerField(label='Season:')
+    circuit = forms.ModelChoiceField(label='Circuit:', queryset=Circuit.objects.all())
+
+
+class RaceSearchForm(forms.Form):
+    name = forms.CharField(label='Name:', max_length=70)
+
+
+# Result
+
+class ResultForm(forms.Form):
+    position = forms.IntegerField(label='Position:')
+    pilot = forms.ModelChoiceField(label='Pilot:', queryset=Pilot.objects.all())
+    race = forms.ModelChoiceField(label='Race:', queryset=Race.objects.all())
+    points = forms.IntegerField(label='Points:')
+
+
+class ResultSearchForm(forms.Form):
+    pilot = forms.ModelChoiceField(label='Pilot:', queryset=Pilot.objects.all())
+    race = forms.ModelChoiceField(label='Race:', queryset=Race.objects.all())
+
 
 # Team
 
@@ -46,6 +97,7 @@ class TeamForm(forms.Form):
     name = forms.CharField(label='Name:', max_length=70)
     date = forms.DateField(label='Fundation Date:')
     championships = forms.IntegerField(label='Championships:')
+
 
 class TeamSearchForm(forms.Form):
     name = forms.CharField(label='Name:', max_length=70)
@@ -60,39 +112,3 @@ class TeamLeaderForm(forms.Form):
 
 class TeamLeaderSearchForm(forms.Form):
     name = forms.CharField(label='Name:', max_length=70)
-
-
-class CircuitSearchForm(forms.Form):
-    name = forms.CharField(label='Name:', max_length=70)
-
-
-class CircuitForm(forms.Form):
-    name = forms.CharField(label='Name:', max_length=70)
-    length = forms.IntegerField(label='Length:')
-    location = forms.CharField(label='Location:', max_length=70)
-    fast_lap = forms.TimeField(label='Fast Lap:')
-    last_winner = forms.ModelChoiceField(label='Last Winner:', queryset=Pilot.objects.all())
-    country = forms.ModelChoiceField(label='Country:', queryset=Country.objects.all())
-
-
-class RaceForm(forms.Form):
-    name = forms.CharField(label='Name:', max_length=70)
-    date = forms.DateField(label='Date:')
-    season = forms.IntegerField(label='Season:')
-    circuit = forms.ModelChoiceField(label='Circuit:', queryset=Circuit.objects.all())
-
-
-class RaceSearchForm(forms.Form):
-    name = forms.CharField(label='Name:', max_length=70)
-
-
-class ResultForm(forms.Form):
-    position = forms.IntegerField(label='Position:')
-    pilot = forms.ModelChoiceField(label='Pilot:', queryset=Pilot.objects.all())
-    race = forms.ModelChoiceField(label='Race:', queryset=Race.objects.all())
-    points = forms.IntegerField(label='Points:')
-
-
-class ResultSearchForm(forms.Form):
-    pilot = forms.ModelChoiceField(label='Pilot:', queryset=Pilot.objects.all())
-    race = forms.ModelChoiceField(label='Race:', queryset=Race.objects.all())

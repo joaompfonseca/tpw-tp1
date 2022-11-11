@@ -8,7 +8,7 @@
     <strong>Actions: </strong>
     <a href="{% url 'teamleaders_edit' _id=teamleader.id %}">Edit Team Leader</a>
 
-    <p><b>Name: </b> {{ team.name }}</p>
-    <p><b>Team: </b> <a href="{% url 'teams_get' _id=teamleader.team.id %}">{{ teamleader.team.name }}</a></p>
+    <p><b>Name: </b>{{ team.name }}</p>
+    <p><b>Team: </b><a href="{% url 'teams_get' _id=teamleader.team.id %}">{{ teamleader.team.name }}</a></p>
 
 {% endblock %}
