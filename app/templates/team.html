@@ -12,9 +12,19 @@
     </p>
     {% endif %}
 
-    <img src="{{ image }}" alt="Team Image" width="320" height="180" style="float:right">
+    <img class="rounded float-right" src="{{ image }}" alt="Team Image" width="320" height="180" style="float:right">
+
     <p><b>Name: </b>{{ team.name }}</p>
     <p><b>Foundation Date: </b>{{ team.date }}</p>
     <p><b>Championships: </b>{{ team.championships }}</p>
+
+    <p><b>Team Leader: </b><a href="{% url 'teamleaders_get' _id=team_leader.id %}">{{ team_leader.name }}</a></p>
+
+    <p><b>Pilots: </b>
+        {% for p in pilots %}
+        <a href="{% url 'pilots_get' _id=p.id %}">{{ p.name }}</a>
+        {% if not forloop.last %} - {% endif %} {# Separate elements in a group with hyphens #}
+        {% endfor %}
+    </p>
 
 {% endblock %}

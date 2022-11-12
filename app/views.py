@@ -226,7 +226,11 @@ def countries_list(req):
 def countries_get(req, _id):
     country = Country.objects.get(id=_id)
 
-    ctx = {'header': 'Country Details', 'country': country}
+    circuits = Circuit.objects.filter(country=country)
+    pilots = Pilot.objects.filter(country=country)
+
+
+    ctx = {'header': 'Country Details', 'country': country, 'circuits': circuits, 'pilots': pilots}
     return render(req, 'country.html', ctx)
 
 
@@ -628,7 +632,11 @@ def teams_get(req, _id):
 
     image = "/static/images/" + team.name + ".png"
 
-    ctx = {'header': 'Team Details', 'team': team, 'image': image}
+    pilots = Pilot.objects.filter(team=team)
+
+    team_leader = TeamLeader.objects.get(team=team)
+
+    ctx = {'header': 'Team Details', 'team': team, 'image': image, 'pilots': pilots, 'team_leader': team_leader}
     return render(req, 'team.html', ctx)
 
 

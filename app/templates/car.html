@@ -16,5 +16,6 @@
     <p><b>Engine: </b>{{ car.engine }}</p>
     <p><b>Weight: </b>{{ car.weight }}</p>
     <p><b>Pilot: </b><a href="{% url 'pilots_get' _id=car.pilot.id %}">{{ car.pilot.name }}</a></p>
+    <p><b>Team: </b><a href="{% url 'teams_get' _id=car.pilot.team.id %}">{{ car.pilot.team.name }}</a></p>
 
 {% endblock %}
