@@ -42,7 +42,7 @@ def cars_list(req):
     actions = [{'str': 'Search Car', 'url': '/cars/search'},
                {'str': 'New Car', 'url': '/cars/new'}]
     lst = [[{'str': c.model, 'url': f'/cars/{c.id}'}] for c in cars]
-    ctx = {'header': 'Cars', 'actions': actions, 'list': lst}
+    ctx = {'header': 'List of Cars', 'actions': actions, 'list': lst}
     return render(req, 'list.html', ctx)
 
 

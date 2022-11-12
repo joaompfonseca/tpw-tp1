@@ -5,8 +5,10 @@
     <h2>{{ header }}</h2>
     <br>
 
-    <strong>Actions: </strong>
-    <a href="{% url 'teams_edit' _id=team.id %}">Edit Team</a>
+    <p>
+        <strong>Actions: </strong>
+        <a href="{% url 'teams_edit' _id=team.id %}">Edit Team</a>
+    </p>
 
     <img src="{{ image }}" alt="Team Image" width="320" height="180" style="float:right">
     <p><b>Name: </b>{{ team.name }}</p>

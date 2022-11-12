@@ -4,9 +4,10 @@
 
     <h2>{{ header }}</h2>
     <br>
-
-    <strong>Actions: </strong>
-    <a href="{% url 'pilots_edit' _id=pilot.id %}">Edit Pilot</a>
+    <p>
+        <strong>Actions: </strong>
+        <a href="{% url 'pilots_edit' _id=pilot.id %}">Edit Pilot</a>
+    </p>
 
     <img src="{{ image }}" alt="Pilot Image" width="200" height="200" style="float:right">
     <p><b>Name: </b> {{ pilot.name }}</p>

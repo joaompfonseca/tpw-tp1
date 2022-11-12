@@ -334,20 +334,20 @@ Header Style
 --------------------------------------------- 
 */
 
-.background-header {
-  background-color: #fff !important;
-  height: 70px!important;
-  position: fixed!important;
-  top: 0!important;
-  left: 0;
-  right: 0;
-  box-shadow: 0px 0px 10px rgba(0,0,0,0.15)!important;
-  -webkit-transition: all .5s ease 0s;
-  -moz-transition: all .5s ease 0s;
-  -o-transition: all .5s ease 0s;
-  transition: all .5s ease 0s;
-  display: none;
-}
+/*.background-header {*/
+/*  background-color: #fff !important;*/
+/*  height: 70px!important;*/
+/*  position: fixed!important;*/
+/*  top: 0!important;*/
+/*  left: 0;*/
+/*  right: 0;*/
+/*  box-shadow: 0px 0px 10px rgba(0,0,0,0.15)!important;*/
+/*  -webkit-transition: all .5s ease 0s;*/
+/*  -moz-transition: all .5s ease 0s;*/
+/*  -o-transition: all .5s ease 0s;*/
+/*  transition: all .5s ease 0s;*/
+/*  display: none;*/
+/*}*/
 
 .header-area {
   background-color: transparent;

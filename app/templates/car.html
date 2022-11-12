@@ -5,8 +5,10 @@
     <h2>{{ header }}</h2>
     <br>
 
-    <strong>Actions: </strong>
-    <a href="{% url 'cars_edit' _id=car.id %}">Edit Car</a>
+    <p>
+        <strong>Actions: </strong>
+        <a href="{% url 'cars_edit' _id=car.id %}">Edit Car</a>
+    </p>
 
     <p><b>Model: </b>{{ car.model }}</p>
     <p><b>Engine: </b>{{ car.engine }}</p>
