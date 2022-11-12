@@ -11,21 +11,41 @@
         <a href="{% url 'pilots_edit' _id=pilot.id %}">Edit Pilot</a>
     </p>
     {% endif %}
-
-    <img src="{{ image }}" alt="Pilot Image" width="200" height="200" style="float:right">
-    <p><b>Name: </b> {{ pilot.name }}</p>
-    <p><b>Birth Date: </b> {{ pilot.date }}</p>
-    <p><b>Victories: </b> {{ pilot.victories }}</p>
-    <p><b>Pole Positions: </b> {{ pilot.pole_positions }}</p>
-    <p><b>Championships: </b> {{ pilot.championships }}</p>
-    <p><b>Contract: </b> {{ pilot.contract }}</p>
-    <p><b>Entry Year: </b> {{ pilot.entry_year }}</p>
-    <p><b>Team: </b> <a href="{% url 'teams_get' _id=pilot.team.id %}">{{ pilot.team.name }}</a></p>
-    <p><b>Country(ies): </b>
-        {% for c in pilot.country.all %}
-            <a href="{% url 'countries_get' _id=c.id %}">{{ c.designation }} ({{ c.code }})</a>
-            {% if not forloop.last %}, {% endif %} {# Separate countries with commas #}
-        {% endfor %}
-    </p>
+    <div class="row">
+        <div class="col-lg-6 col-md-6 col-sm-12" style="padding-bottom: 30px">
+        <img src="{{ image }}" alt="Pilot Image" style="width: 206px; height: 206px">
+        <p><b>Name: </b> {{ pilot.name }}</p>
+        <p><b>Birth Date: </b> {{ pilot.date }}</p>
+        <p><b>Victories: </b> {{ pilot.victories }}</p>
+        <p><b>Pole Positions: </b> {{ pilot.pole_positions }}</p>
+        <p><b>Championships: </b> {{ pilot.championships }}</p>
+        <p><b>Contract: </b> {{ pilot.contract }}</p>
+        <p><b>Entry Year: </b> {{ pilot.entry_year }}</p>
+        <p><b>Team: </b> <a href="{% url 'teams_get' _id=pilot.team.id %}">{{ pilot.team.name }}</a></p>
+        <p><b>Country(ies): </b>
+            {% for c in pilot.country.all %}
+                <a href="{% url 'countries_get' _id=c.id %}">{{ c.designation }} ({{ c.code }})</a>
+                {% if not forloop.last %}, {% endif %} {# Separate countries with commas #}
+            {% endfor %}
+        </p>
+        </div>
+        <div class="col-lg-6 col-md-6 col-sm-12">
+        <h4 style="padding-bottom: 20px">Pilot's Results</h4>
+            <table style="border-collapse: separate; border-spacing: 1em; color: white">
+                <tr>
+                    <th>Position</th>
+                    <th>Race</th>
+                    <th>Points</th>
+                </tr>
+                {% for r in results %}
+                    <tr>
+                        <td>{{ r.position }}</td>
+                        <td><a href="{% url 'races_get' _id=r.race.id %}">{{ r.race }}</a></td>
+                        <td>{{ r.points }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
 
 {% endblock %}

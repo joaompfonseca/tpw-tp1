@@ -339,8 +339,8 @@ def pilots_get(req, _id):
     pilot = Pilot.objects.get(id=_id)
 
     image = "/static/images/" + pilot.name + ".png"
-
-    ctx = {'header': 'Pilot Details', 'pilot': pilot, 'image': image}
+    results = Result.objects.filter(pilot=pilot).order_by('-race__date')
+    ctx = {'header': 'Pilot Details', 'pilot': pilot, 'image': image, 'results': results}
     return render(req, 'pilot.html', ctx)
 
 
