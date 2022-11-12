@@ -62,7 +62,7 @@ class Race(models.Model):
     date = models.DateField()
     season = models.IntegerField()
     fast_lap = models.TimeField()
-    circuit = models.OneToOneField(Circuit, on_delete=models.RESTRICT)
+    circuit = models.ForeignKey(Circuit, on_delete=models.RESTRICT)
 
     def __str__(self):
         return self.name
