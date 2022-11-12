@@ -46,24 +46,6 @@ def cars_list(req):
     return render(req, 'list.html', ctx)
 
 
-def cars_new(req):
-    if req.method == 'POST':
-        form = CarForm(req.POST)
-        if form.is_valid():
-            Car.objects.create(
-                model=form.cleaned_data['model'],
-                engine=form.cleaned_data['engine'],
-                weight=form.cleaned_data['weight'],
-                pilot=form.cleaned_data['pilot']
-            )
-
-            return redirect('cars_list')
-    else:
-        form = CarForm()
-        ctx = {'header': 'New Car', 'form': form}
-        return render(req, 'new.html', ctx)
-
-
 def cars_search(req):
     if req.method == 'POST':
         form = CarSearchForm(req.POST)
@@ -90,7 +72,29 @@ def cars_get(req, _id):
     return render(req, 'car.html', ctx)
 
 
+def cars_new(req):
+    if not req.user.is_authenticated or req.user.username != 'admin':
+        return redirect('login')
+    if req.method == 'POST':
+        form = CarForm(req.POST)
+        if form.is_valid():
+            Car.objects.create(
+                model=form.cleaned_data['model'],
+                engine=form.cleaned_data['engine'],
+                weight=form.cleaned_data['weight'],
+                pilot=form.cleaned_data['pilot']
+            )
+
+            return redirect('cars_list')
+    else:
+        form = CarForm()
+        ctx = {'header': 'New Car', 'form': form}
+        return render(req, 'new.html', ctx)
+
+
 def cars_edit(req, _id):
+    if not req.user.is_authenticated or req.user.username != 'admin':
+        return redirect('login')
     car = Car.objects.get(id=_id)
     if req.method == 'POST':
         form = CarForm(req.POST)
@@ -219,6 +223,29 @@ def countries_list(req):
     return render(req, 'list.html', ctx)
 
 
+def countries_search(req):
+    if req.method == 'POST':
+        form = CountrySearchForm(req.POST)
+        if form.is_valid():
+            designation = form.cleaned_data['designation']
+
+            query = f'Country.designation={designation}'
+            # if 'searched' in req.session and req.session['searched'] == query:
+            #     return HttpResponse('You have searched for the same thing before. Please try again.')
+            # req.session['searched'] = query
+
+            countries = Country.objects.filter(designation__icontains=designation)
+
+            lst = [[{'str': c.designation, 'url': f'/countries/{c.id}'}]
+                   for c in countries]
+            ctx = {'header': 'Countries', 'list': lst, 'query': query}
+            return render(req, 'list.html', ctx)
+    else:
+        form = CountrySearchForm()
+        ctx = {'header': 'Search Country', 'form': form}
+        return render(req, 'search.html', ctx)
+
+
 def countries_get(req, _id):
     country = Country.objects.get(id=_id)
 
@@ -242,29 +269,6 @@ def countries_new(req):
         form = CountryForm()
         ctx = {'header': 'New Country', 'form': form}
         return render(req, 'new.html', ctx)
-
-
-def countries_search(req):
-    if req.method == 'POST':
-        form = CountrySearchForm(req.POST)
-        if form.is_valid():
-            designation = form.cleaned_data['designation']
-
-            query = f'Country.designation={designation}'
-            # if 'searched' in req.session and req.session['searched'] == query:
-            #     return HttpResponse('You have searched for the same thing before. Please try again.')
-            # req.session['searched'] = query
-
-            countries = Country.objects.filter(designation__icontains=designation)
-
-            lst = [[{'str': c.designation, 'url': f'/countries/{c.id}'}]
-                   for c in countries]
-            ctx = {'header': 'Countries', 'list': lst, 'query': query}
-            return render(req, 'list.html', ctx)
-    else:
-        form = CountrySearchForm()
-        ctx = {'header': 'Search Country', 'form': form}
-        return render(req, 'search.html', ctx)
 
 
 def countries_edit(req, _id):
