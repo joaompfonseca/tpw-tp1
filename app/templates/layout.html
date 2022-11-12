@@ -3,75 +3,112 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700;800;900&display=swap"
+          rel="stylesheet">
 
     <title>TP1 - Formula 1</title>
-
     {% load static %}
+
     <!-- Bootstrap core CSS -->
-    <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap.min.css' %}"/>
-    <!-- Custom styles for this template -->
-    <link rel="stylesheet" type="text/css" href="{% static 'css/site.css' %}"/>
+    <link rel="stylesheet" href="{% static '/css/bootstrap.min.css' %}">
+
+    <!-- Additional CSS Files -->
+    <link rel="stylesheet" href="{% static '/css/fontawesome.css' %}">
+    <link rel="stylesheet" href="{% static '/css/templatemo-cyborg-gaming.css' %}">
+    <link rel="stylesheet" href="{% static '/css/owl.css' %}">
+    <link rel="stylesheet" href="{% static '/css/animate.css' %}">
+    <link rel="stylesheet" href="https://unpkg.com/swiper@7/swiper-bundle.min.css"/>
+    <!--
+
+    TemplateMo 579 Cyborg Gaming
+
+    https://templatemo.com/tm-579-cyborg-gaming
+
+    -->
 </head>
 
 <body>
 
-<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-    <a class="navbar-brand" href="#">Formula 1</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarDefault"
-            aria-controls="navbarDefault" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <div class="collapse navbar-collapse" id="navbarDefault">
-        <ul class="navbar-nav mr-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'cars_list' %}">Cars</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'circuits_list' %}">Circuits</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'countries_list' %}">Countries</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'pilots_list' %}">Pilots</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'races_list' %}">Races</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'results_list' %}">Results</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'teams_list' %}">Teams</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{% url 'teamleaders_list' %}">Team Leaders</a>
-            </li>
-        </ul>
-        {% include 'loginpartial.html' %}
+<!-- ***** Preloader Start ***** -->
+<div id="js-preloader" class="js-preloader">
+    <div class="preloader-inner">
+        <span class="dot"></span>
+        <div class="dots">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
     </div>
-</nav>
+</div>
+<!-- ***** Preloader End ***** -->
 
-<main role="main">
-    <div class="container body-content">
-        {% block content %} {% endblock %}
-    </div> <!-- /container -->
-</main>
+<!-- ***** Header Area Start ***** -->
+<header class="header-area header-sticky">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <nav class="main-nav">
+                    <!-- ***** Logo Start ***** -->
+                    <a href="{% url 'home' %}" class="logo">
+                        <img src="{% static '/images/logo.png' %}" alt="">
+                    </a>
+                    <!-- ***** Logo End ***** -->
+                    <!-- ***** Menu Start ***** -->
+                    <ul class="nav">
+                        <li><a href="{% url 'home' %}">Home</a></li>
+                        <li><a href="{% url 'cars_list' %}">Cars</a></li>
+                        <li><a href="{% url 'circuits_list' %}">Circuits</a></li>
+                        <!--<li><a href="{% url 'countries_list' %}">Countries</a></li>-->
+                        <li><a href="{% url 'pilots_list' %}">Pilots</a></li>
+                        <li><a href="{% url 'races_list' %}">Races</a></li>
+                        <!--<li><a href="{% url 'results_list' %}">Results</a></li>-->
+                        <li><a href="{% url 'teams_list' %}">Teams</a></li>
+                        <!--<li><a href="{% url 'teamleaders_list' %}">Team Leaders</a></li>-->
+                        {% include 'loginpartial.html' %}
+                    </ul>
+                    <a class='menu-trigger'>
+                        <span>Menu</span>
+                    </a>
+                    <!-- ***** Menu End ***** -->
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+<!-- ***** Header Area End ***** -->
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="page-content">
+                {% block content %} {% endblock %}
+            </div>
+        </div>
+    </div>
+</div>
 
 <footer>
-    <hr/>
-    <p>&copy; {{ year }} - My Django Application</p>
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <p>Tecnologies and Web Programming (2022/2023)
+                    - Template by <a href="https://templatemo.com" target="_blank">TemplateMo</a></p>
+            </div>
+        </div>
+    </div>
 </footer>
 
-<!-- JQuery and Bootstrap core
-================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
-<script src="{% static 'scripts/jquery-3.4.1.min.js' %}"></script>
-<script src="{% static 'scripts/popper.min.js' %}"></script>
-<script src="{% static 'scripts/bootstrap.min.js' %}"></script>
+<!-- Scripts -->
+<!-- Bootstrap core JavaScript -->
+<script src="{% static '/scripts/jquery-3.4.1.min.js' %}"></script>
+<script src="{% static '/scripts/bootstrap.min.js' %}"></script>
+
+<script src="{% static '/scripts/isotope.min.js' %}"></script>
+<script src="{% static '/scripts/owl-carousel.js' %}"></script>
+<script src="{% static '/scripts/tabs.js' %}"></script>
+<script src="{% static '/scripts/popup.js' %}"></script>
+<script src="{% static '/scripts/custom.js' %}"></script>
 
 </body>
 </html>

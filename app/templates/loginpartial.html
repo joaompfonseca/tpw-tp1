@@ -1,16 +1,21 @@
+{% load static %}
 
 {% if user.is_authenticated %}
 
-<form id="logoutForm" action="/logout" method="get" class="form-inline my-2 my-lg-0">
-    {% csrf_token %}
-    <span class="navbar-brand">Hello {{ user.username }}!</span>
-    <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
-</form>
+    <li>
+        <a href="{% url 'logout' %}">
+            Hello <strong>{{ user.username }}</strong> !
+            <img src="{% static '/images/profile-header.jpg' %}">
+        </a>
+    </li>
 
 {% else %}
 
-<ul class="navbar-nav navbar-right">
-    <li><a href="{% url 'login' %}">Log in</a></li>
-</ul>
+    <li>
+        <a href="{% url 'login' %}">
+            Log In
+            <img src="{% static '/images/profile-header-none.jpg' %}">
+        </a>
+    </li>
 
 {% endif %}
