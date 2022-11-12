@@ -12,7 +12,7 @@
     </p>
     {% endif %}
 
-    <p><b>Name: </b>{{ team.name }}</p>
+    <p><b>Name: </b>{{ teamleader.name }}</p>
     <p><b>Team: </b><a href="{% url 'teams_get' _id=teamleader.team.id %}">{{ teamleader.team.name }}</a></p>
 
 {% endblock %}
