@@ -48,7 +48,7 @@
     <div class="container">
         <div class="row">
             <div class="col-12">
-                <nav class="main-nav">
+                <nav class="main-nav navbar">
                     <!-- ***** Logo Start ***** -->
                     <a href="{% url 'home' %}" class="logo">
                         <img src="{% static '/images/logo.png' %}" alt="">
@@ -57,21 +57,27 @@
                     <!-- ***** Menu Start ***** -->
                     <ul class="nav">
                         <li><a href="{% url 'home' %}">Home</a></li>
-                        <li><a href="{% url 'cars_list' %}">Cars</a></li>
-                        <li><a href="{% url 'circuits_list' %}">Circuits</a></li>
-                        <!--<li><a href="{% url 'countries_list' %}">Countries</a></li>-->
                         <li><a href="{% url 'pilots_list' %}">Pilots</a></li>
-                        <li><a href="{% url 'races_list' %}">Races</a></li>
-                        <!--<li><a href="{% url 'results_list' %}">Results</a></li>-->
                         <li><a href="{% url 'teams_list' %}">Teams</a></li>
-                        <!--<li><a href="{% url 'teamleaders_list' %}">Team Leaders</a></li>-->
+                        <li><a href="{% url 'races_list' %}">Races</a></li>
+                        <li><a href="{% url 'circuits_list' %}">Circuits</a></li>
+                        <li class="dropdown">
+                            <a class="dropdown-toggle" data-toggle="dropdown" href="#">Others
+                                <span class="caret"></span></a>
+                            <ul class="dropdown-menu bg-dark">
+                                <li><a href="{% url 'cars_list' %}">Cars</a></li>
+                                <li><a href="{% url 'countries_list' %}">Countries</a></li>
+                                <li><a href="{% url 'results_list' %}">Results</a></li>
+                                <li><a href="{% url 'teamleaders_list' %}">Team Leaders</a></li>
+                                <div></div>
+                            </ul>
+                        </li>
                         {% include 'loginpartial.html' %}
                     </ul>
                     <a class='menu-trigger'>
                         <span>Menu</span>
                     </a>
                     <!-- ***** Menu End ***** -->
-                </nav>
             </div>
         </div>
     </div>
