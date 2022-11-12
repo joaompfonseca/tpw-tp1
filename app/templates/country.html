@@ -15,19 +15,23 @@
     <p><b>Designation: </b>{{ country.designation }}</p>
     <p><b>Code: </b>{{ country.code }}</p>
 
+    {% if circuits %}
     <p><b>Circuits: </b>
         {% for c in circuits %}
         <a href="{% url 'circuits_get' _id=c.id %}">{{ c.name }}</a>
         {% if not forloop.last %} - {% endif %} {# Separate elements in a group with hyphens #}
         {% endfor %}
     </p>
+    {% endif %}
 
+    {% if pilots %}
     <p><b>Pilots: </b>
         {% for p in pilots %}
         <a href="{% url 'pilots_get' _id=p.id %}">{{ p.name }}</a>
         {% if not forloop.last %} - {% endif %} {# Separate elements in a group with hyphens #}
         {% endfor %}
     </p>
+    {% endif %}
 
 
 
