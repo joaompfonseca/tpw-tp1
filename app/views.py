@@ -307,7 +307,9 @@ def pilots_search(req):
 def pilots_get(req, _id):
     pilot = Pilot.objects.get(id=_id)
 
-    ctx = {'header': 'Pilot Details', 'pilot': pilot}
+    image = "/static/images/" + pilot.name + ".png"
+
+    ctx = {'header': 'Pilot Details', 'pilot': pilot, 'image': image}
     return render(req, 'pilot.html', ctx)
 
 
@@ -594,7 +596,9 @@ def teams_search(req):
 def teams_get(req, _id):
     team = Team.objects.get(id=_id)
 
-    ctx = {'header': 'Team Details', 'team': team}
+    image = "/static/images/" + team.name + ".png"
+
+    ctx = {'header': 'Team Details', 'team': team, 'image': image}
     return render(req, 'team.html', ctx)
 
 

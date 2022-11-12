@@ -8,6 +8,7 @@
     <strong>Actions: </strong>
     <a href="{% url 'pilots_edit' _id=pilot.id %}">Edit Pilot</a>
 
+    <img src="{{ image }}" alt="Pilot Image" width="200" height="200" style="float:right">
     <p><b>Name: </b> {{ pilot.name }}</p>
     <p><b>Birth Date: </b> {{ pilot.date }}</p>
     <p><b>Victories: </b> {{ pilot.victories }}</p>
