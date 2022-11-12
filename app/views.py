@@ -722,3 +722,7 @@ def teamleaders_edit(req, _id):
         })
         ctx = {'header': 'Edit Team Leader', 'form': form}
         return render(req, 'edit.html', ctx)
+
+
+def template_index(req):
+    return render(req, 'template_index.html')

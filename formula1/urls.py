@@ -76,4 +76,7 @@ urlpatterns = [
     path('teamleaders/<int:_id>/', views.teamleaders_get, name='teamleaders_get'),
     path('teamleaders/new/', views.teamleaders_new, name='teamleaders_new'),
     path('teamleaders/<int:_id>/edit/', views.teamleaders_edit, name='teamleaders_edit'),
+
+    # Template
+    path('template_index/', views.template_index, name='template_index'),
 ]
