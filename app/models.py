@@ -29,7 +29,7 @@ class Pilot(models.Model):
     championships = models.IntegerField()
     contract = models.IntegerField()
     entry_year = models.IntegerField()
-    team = models.ForeignKey(Team, on_delete=models.CASCADE)
+    team = models.ForeignKey(Team, on_delete=models.RESTRICT)
     country = models.ManyToManyField(Country)
 
     def __str__(self):
@@ -40,7 +40,7 @@ class Car(models.Model):
     model = models.CharField(max_length=70)
     engine = models.CharField(max_length=70)
     weight = models.IntegerField()
-    pilot = models.OneToOneField(Pilot, on_delete=models.CASCADE)
+    pilot = models.OneToOneField(Pilot, on_delete=models.RESTRICT)
 
     def __str__(self):
         return self.model
@@ -50,8 +50,8 @@ class Circuit(models.Model):
     name = models.CharField(max_length=70)
     length = models.FloatField()
     location = models.CharField(max_length=70)
-    last_winner = models.ForeignKey(Pilot, on_delete=models.CASCADE)
-    country = models.ForeignKey(Country, on_delete=models.CASCADE)
+    last_winner = models.ForeignKey(Pilot, on_delete=models.RESTRICT)
+    country = models.ForeignKey(Country, on_delete=models.RESTRICT)
 
     def __str__(self):
         return self.name
@@ -62,7 +62,7 @@ class Race(models.Model):
     date = models.DateField()
     season = models.IntegerField()
     fast_lap = models.TimeField()
-    circuit = models.OneToOneField(Circuit, on_delete=models.CASCADE)
+    circuit = models.OneToOneField(Circuit, on_delete=models.RESTRICT)
 
     def __str__(self):
         return self.name
@@ -70,8 +70,8 @@ class Race(models.Model):
 
 class Result(models.Model):
     position = models.IntegerField()
-    pilot = models.ForeignKey(Pilot, on_delete=models.CASCADE)
-    race = models.ForeignKey(Race, on_delete=models.CASCADE)
+    pilot = models.ForeignKey(Pilot, on_delete=models.RESTRICT)
+    race = models.ForeignKey(Race, on_delete=models.RESTRICT)
     points = models.IntegerField()
 
     def __str__(self):
@@ -80,7 +80,7 @@ class Result(models.Model):
 
 class TeamLeader(models.Model):
     name = models.CharField(max_length=70)
-    team = models.OneToOneField(Team, on_delete=models.CASCADE)
+    team = models.OneToOneField(Team, on_delete=models.RESTRICT)
 
     def __str__(self):
         return self.name
