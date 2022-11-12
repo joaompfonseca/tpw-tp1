@@ -6,13 +6,13 @@
     <br>
 
     {% if actions %}
-        <p>
-            <strong>Actions:</strong>
-            {% for action in actions %}
-                <a href="{{ action.url }}">{{ action.str }}</a>
-                {% if not forloop.last %} - {% endif %} {# Separate actions with hyphens #}
-            {% endfor %}
-        </p>
+    <p>
+        <strong>Actions:</strong>
+        {% for action in actions %}
+            <a href="{{ action.url }}">{{ action.str }}</a>
+            {% if not forloop.last %} - {% endif %} {# Separate actions with hyphens #}
+        {% endfor %}
+    </p>
     {% endif %}
 
     {% if query %}

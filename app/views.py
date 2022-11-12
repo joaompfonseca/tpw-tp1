@@ -39,11 +39,31 @@ def signup(req):
 
 def cars_list(req):
     cars = Car.objects.all()
-    actions = [{'str': 'Search Car', 'url': '/cars/search'},
-               {'str': 'New Car', 'url': '/cars/new'}]
+    actions = [{'str': 'Search Car', 'url': '/cars/search'}]
+    if req.user.is_authenticated and req.user.username == 'admin':
+        actions += [{'str': 'New Car', 'url': '/cars/new'}]
     lst = [[{'str': c.model, 'url': f'/cars/{c.id}'}] for c in cars]
-    ctx = {'header': 'List of Cars', 'actions': actions, 'list': lst}
+
+    ctx = {'header': 'Cars', 'actions': actions, 'list': lst}
     return render(req, 'list.html', ctx)
+
+
+def cars_new(req):
+    if req.method == 'POST':
+        form = CarForm(req.POST)
+        if form.is_valid():
+            Car.objects.create(
+                model=form.cleaned_data['model'],
+                engine=form.cleaned_data['engine'],
+                weight=form.cleaned_data['weight'],
+                pilot=form.cleaned_data['pilot']
+            )
+
+            return redirect('cars_list')
+    else:
+        form = CarForm()
+        ctx = {'header': 'New Car', 'form': form}
+        return render(req, 'new.html', ctx)
 
 
 def cars_search(req):
@@ -72,29 +92,7 @@ def cars_get(req, _id):
     return render(req, 'car.html', ctx)
 
 
-def cars_new(req):
-    if not req.user.is_authenticated or req.user.username != 'admin':
-        return redirect('login')
-    if req.method == 'POST':
-        form = CarForm(req.POST)
-        if form.is_valid():
-            Car.objects.create(
-                model=form.cleaned_data['model'],
-                engine=form.cleaned_data['engine'],
-                weight=form.cleaned_data['weight'],
-                pilot=form.cleaned_data['pilot']
-            )
-
-            return redirect('cars_list')
-    else:
-        form = CarForm()
-        ctx = {'header': 'New Car', 'form': form}
-        return render(req, 'new.html', ctx)
-
-
 def cars_edit(req, _id):
-    if not req.user.is_authenticated or req.user.username != 'admin':
-        return redirect('login')
     car = Car.objects.get(id=_id)
     if req.method == 'POST':
         form = CarForm(req.POST)
@@ -120,8 +118,9 @@ def cars_edit(req, _id):
 
 def circuits_list(req):
     circuits = Circuit.objects.all()
-    actions = [{'str': 'Search Circuit', 'url': '/circuits/search'},
-               {'str': 'New Circuit', 'url': '/circuits/new'}]
+    actions = [{'str': 'Search Circuit', 'url': '/circuits/search'}]
+    if req.user.is_authenticated and req.user.username == 'admin':
+        actions += [{'str': 'New Circuit', 'url': '/circuits/new'}]
     lst = [[{'str': c.name, 'url': f'/circuits/{c.id}'}] for c in circuits]
 
     ctx = {'header': 'List of Circuits', 'actions': actions, 'list': lst}
@@ -216,34 +215,12 @@ def circuits_edit(req, _id):
 
 def countries_list(req):
     countries = Country.objects.all()
-    actions = [{'str': 'Search Country', 'url': '/countries/search'},
-               {'str': 'New Country', 'url': '/countries/new'}]
+    actions = [{'str': 'Search Country', 'url': '/countries/search'}]
+    if req.user.is_authenticated and req.user.username == 'admin':
+        actions += [{'str': 'New Country', 'url': '/countries/new'}]
     lst = [[{'str': c.designation, 'url': f'/countries/{c.id}'}] for c in countries]
     ctx = {'header': 'Countries', 'actions': actions, 'list': lst}
     return render(req, 'list.html', ctx)
-
-
-def countries_search(req):
-    if req.method == 'POST':
-        form = CountrySearchForm(req.POST)
-        if form.is_valid():
-            designation = form.cleaned_data['designation']
-
-            query = f'Country.designation={designation}'
-            # if 'searched' in req.session and req.session['searched'] == query:
-            #     return HttpResponse('You have searched for the same thing before. Please try again.')
-            # req.session['searched'] = query
-
-            countries = Country.objects.filter(designation__icontains=designation)
-
-            lst = [[{'str': c.designation, 'url': f'/countries/{c.id}'}]
-                   for c in countries]
-            ctx = {'header': 'Countries', 'list': lst, 'query': query}
-            return render(req, 'list.html', ctx)
-    else:
-        form = CountrySearchForm()
-        ctx = {'header': 'Search Country', 'form': form}
-        return render(req, 'search.html', ctx)
 
 
 def countries_get(req, _id):
@@ -271,6 +248,29 @@ def countries_new(req):
         return render(req, 'new.html', ctx)
 
 
+def countries_search(req):
+    if req.method == 'POST':
+        form = CountrySearchForm(req.POST)
+        if form.is_valid():
+            designation = form.cleaned_data['designation']
+
+            query = f'Country.designation={designation}'
+            # if 'searched' in req.session and req.session['searched'] == query:
+            #     return HttpResponse('You have searched for the same thing before. Please try again.')
+            # req.session['searched'] = query
+
+            countries = Country.objects.filter(designation__icontains=designation)
+
+            lst = [[{'str': c.designation, 'url': f'/countries/{c.id}'}]
+                   for c in countries]
+            ctx = {'header': 'Countries', 'list': lst, 'query': query}
+            return render(req, 'list.html', ctx)
+    else:
+        form = CountrySearchForm()
+        ctx = {'header': 'Search Country', 'form': form}
+        return render(req, 'search.html', ctx)
+
+
 def countries_edit(req, _id):
     if not req.user.is_authenticated or req.user.username != 'admin':
         return redirect('login')
@@ -296,8 +296,9 @@ def countries_edit(req, _id):
 
 def pilots_list(req):
     pilots = Pilot.objects.all()
-    actions = [{'str': 'Search Pilot', 'url': '/pilots/search'},
-               {'str': 'New Pilot', 'url': '/pilots/new'}]
+    actions = [{'str': 'Search Pilot', 'url': '/pilots/search'}]
+    if req.user.is_authenticated and req.user.username == 'admin':
+        actions += [{'str': 'New Pilot', 'url': '/pilots/new'}]
     lst = [[{'str': p.name, 'url': f'/pilots/{p.id}'}] for p in pilots]
 
     ctx = {'header': 'List of Pilots', 'actions': actions, 'list': lst}
@@ -407,8 +408,9 @@ def pilots_edit(req, _id):
 
 def races_list(req):
     races = Race.objects.all()
-    actions = [{'str': 'Search Race', 'url': '/races/search'},
-               {'str': 'New Race', 'url': '/races/new'}]
+    actions = [{'str': 'Search Race', 'url': '/races/search'}]
+    if req.user.is_authenticated and req.user.username == 'admin':
+        actions += [{'str': 'New Race', 'url': '/races/new'}]
     lst = [[{'str': r.name, 'url': f'/races/{r.id}'}] for r in races]
 
     ctx = {'header': 'List of Races', 'actions': actions, 'list': lst}
@@ -497,8 +499,9 @@ def races_edit(req, _id):
 
 def results_list(req):
     results = Result.objects.all()
-    actions = [{'str': 'Search Result', 'url': '/results/search'},
-               {'str': 'New Result', 'url': '/results/new'}]
+    actions = [{'str': 'Search Result', 'url': '/results/search'}]
+    if req.user.is_authenticated and req.user.username == 'admin':
+        actions += [{'str': 'New Result', 'url': '/results/new'}]
     lst = [[{'str': r.pilot, 'url': f'/results/{r.id}'}] for r in results]
 
     ctx = {'header': 'List of Results', 'actions': actions, 'list': lst}
@@ -585,8 +588,9 @@ def results_edit(req, _id):
 
 def teams_list(req):
     teams = Team.objects.all()
-    actions = [{'str': 'Search Team', 'url': '/teams/search'},
-               {'str': 'New Team', 'url': '/teams/new'}]
+    actions = [{'str': 'Search Team', 'url': '/teams/search'}]
+    if req.user.is_authenticated and req.user.username == 'admin':
+        actions += [{'str': 'New Team', 'url': '/teams/new'}]
     lst = [[{'str': t.name, 'url': f'/teams/{t.id}'}] for t in teams]
 
     ctx = {'header': 'List of Teams', 'actions': actions, 'list': lst}
@@ -674,8 +678,9 @@ def teams_edit(req, _id):
 
 def teamleaders_list(req):
     teamleaders = TeamLeader.objects.all()
-    actions = [{'str': 'Search Team Leader', 'url': '/teamleaders/search'},
-               {'str': 'New Team Leader', 'url': '/teamleaders/new'}]
+    actions = [{'str': 'Search Team Leader', 'url': '/teamleaders/search'}]
+    if req.user.is_authenticated and req.user.username == 'admin':
+        actions += [{'str': 'New Team Leader', 'url': '/teamleaders/new'}]
     lst = [[{'str': tl.name, 'url': f'/teamleaders/{tl.id}'}] for tl in teamleaders]
 
     ctx = {'header': 'List of Team Leaders', 'actions': actions, 'list': lst}
