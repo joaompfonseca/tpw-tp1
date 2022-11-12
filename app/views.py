@@ -1,16 +1,38 @@
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.forms import UserCreationForm
 from django.db.models import Q
 from django.shortcuts import render, redirect
 
-from app.models import Circuit, Race, Result, Team, TeamLeader, Pilot, Country, Car
-from app.forms import PilotForm, PilotSearchForm, TeamForm, TeamSearchForm, TeamLeaderSearchForm, TeamLeaderForm, \
-    CircuitSearchForm, CircuitForm, RaceSearchForm, RaceForm, ResultSearchForm, ResultForm, CountrySearchForm, \
-    CountryForm, CarSearchForm, CarForm
+from app.models import *
+from app.forms import *
 
 
 # Create your views here.
 
+# Home
+
 def home(req):
     return render(req, 'home.html')
+
+
+# Auth
+def signup(req):
+    if req.method == 'POST':
+        form = UserCreationForm(req.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            raw_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=raw_password)
+            login(req, user)
+            return redirect('home')
+        else:
+            ctx = {'form': form}
+            return render(req, 'signup.html', ctx)
+    else:
+        form = UserCreationForm()
+        ctx = {'form': form}
+        return render(req, 'signup.html', ctx)
 
 
 # Car
