@@ -1,5 +1,6 @@
 from django.contrib.auth import authenticate, login, get_user
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import AnonymousUser
 from django.db.models import Q
 from django.shortcuts import render, redirect
 
@@ -380,15 +381,20 @@ def pilots_search(req):
 
 def pilots_get(req, _id):
     pilot = Pilot.objects.get(id=_id)
-
-    if pilot in Profile.objects.get(user=get_user(req)).favourite_pilot.all():
-        faved = True
-    else:
-        faved = False
+    faved = None
+    if not isinstance(get_user(req), AnonymousUser):
+        if pilot in Profile.objects.get(user=get_user(req)).favourite_pilot.all():
+            faved = True
+        else:
+            faved = False
 
     image = "/static/images/" + pilot.name + ".png"
+    dislike_image = "/static/images/like_button.png"
+    like_image = "/static/images/dislike_button.png"
+
     results = Result.objects.filter(pilot=pilot).order_by('-race__date')
-    ctx = {'header': 'Pilot Details', 'pilot': pilot, 'image': image, 'results': results, 'favourite': faved}
+    ctx = {'header': 'Pilot Details', 'pilot': pilot, 'image': image, 'results': results, 'favourite': faved,
+           'dislike_image': dislike_image, 'like_image': like_image}
     return render(req, 'pilot.html', ctx)
 
 

@@ -1,13 +1,20 @@
 {% extends "layout.html" %}
+{% load static %}
 
 {% block content %}
     <div class="row">
         <h2>{{ header }}</h2>
         {% if user.is_authenticated %}
             {% if favourite %}
-                <a href="{% url 'remove_from_favourite' pilot_id=pilot.id %}">Unlove it</a>
+                <a href="{% url 'remove_from_favourite' pilot_id=pilot.id %}">
+                    <img src="{{ like_image }}" alt="Pilot Image" style="width: 25px; height: 23px;
+                    margin-top: 9px; margin-left: 10px">
+                </a>
             {% else %}
-                <a href="{% url 'add_to_favourite' pilot_id=pilot.id %}">Love it</a>
+                <a href="{% url 'add_to_favourite' pilot_id=pilot.id %}">
+                <img src="{{ dislike_image }}" alt="Pilot Image" style="width: 25px; height: 22px;
+                    margin-top: 9px; margin-left: 10px"">
+                </a>
             {% endif %}
         {% endif %}
     </div>
