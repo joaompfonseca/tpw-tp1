@@ -30,12 +30,20 @@
                         <th>Position</th>
                         <th>Pilot</th>
                         <th>Points</th>
+                        {% if user.is_authenticated and user.username == 'admin' %}
+                            <th>Actions</th>
+                        {% endif %}
                     </tr>
                     {% for r in results %}
                         <tr>
                             <td>{{ r.position }}</td>
                             <td><a href="{% url 'pilots_get' _id=r.pilot.id %}">{{ r.pilot.name }}</a></td>
                             <td>{{ r.points }}</td>
+                            {% if user.is_authenticated and user.username == 'admin' %}
+                                <td>
+                                    <a href="{% url 'results_edit' _id=r.id %}">Edit</a>
+                                </td>
+                            {% endif %}
                         </tr>
                     {% endfor %}
                 </table>

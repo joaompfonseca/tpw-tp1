@@ -623,14 +623,14 @@ def results_new(req):
     if req.method == 'POST':
         form = ResultForm(req.POST)
         if form.is_valid():
-            Result.objects.create(
+            result = Result.objects.create(
                 position=form.cleaned_data['position'],
                 pilot=form.cleaned_data['pilot'],
-                race=form.cleaned['race'],
+                race=form.cleaned_data['race'],
                 points=form.cleaned_data['points']
             )
 
-            return redirect('results_list')
+            return redirect('races_get', _id=result.race.id)
     else:
         form = ResultForm()
         ctx = {'header': 'New Result', 'form': form}
@@ -650,7 +650,7 @@ def results_edit(req, _id):
             result.points = form.cleaned_data['points']
             result.save()
 
-            return redirect('results_get', _id=_id)
+            return redirect('races_get', _id=result.race.id)
     else:
         form = ResultForm(initial={
             'position': result.position,
