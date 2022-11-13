@@ -155,8 +155,9 @@ def circuits_search(req):
 
 def circuits_get(req, _id):
     circuit = Circuit.objects.get(id=_id)
+    races = Race.objects.filter(circuit=circuit)
 
-    ctx = {'header': 'Circuit Details', 'circuit': circuit}
+    ctx = {'header': 'Circuit Details', 'circuit': circuit, 'races': races}
     return render(req, 'circuit.html', ctx)
 
 
