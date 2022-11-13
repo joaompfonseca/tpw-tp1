@@ -653,7 +653,10 @@ def teams_get(req, _id):
 
     team_leader = TeamLeader.objects.get(team=team)
 
-    ctx = {'header': 'Team Details', 'team': team, 'image': image, 'pilots': pilots, 'team_leader': team_leader}
+    team_points = sum([p.total_points for p in pilots])
+
+    ctx = {'header': 'Team Details', 'team': team, 'image': image, 'pilots': pilots, 'team_leader': team_leader
+           , 'team_points': team_points}
     return render(req, 'team.html', ctx)
 
 

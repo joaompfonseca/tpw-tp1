@@ -12,19 +12,25 @@
                 </div>
                 <div class="row" style="padding-top: 30px">
                     <div class="col-lg-4 col-md-4 col-sm-12 center-stuff">
-                        <div class="stats-circle center-stuff">
-                            <a href="{% url 'pilots_list' %}"><h5>{{ stats.total_pilots }} Pilots</h5></a>
-                        </div>
+                        <a href="{% url 'pilots_list' %}">
+                            <div class="stats-circle center-stuff">
+                                <h5>{{ stats.total_pilots }} Pilots</h5>
+                            </div>
+                        </a>
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-12 center-stuff">
-                        <div class="stats-circle center-stuff">
-                            <a href="{% url 'teams_list' %}"><h5>{{ stats.total_teams }} Teams</h5></a>
-                        </div>
+                        <a href="{% url 'teams_list' %}">
+                            <div class="stats-circle center-stuff">
+                                <h5>{{ stats.total_teams }} Teams</h5>
+                            </div>
+                        </a>
                     </div>
                     <div class="col-lg-4 col-md-4 col-sm-12 center-stuff">
-                        <div class="stats-circle center-stuff">
-                            <a href="{% url 'races_list' %}"><h5>{{ stats.total_races }} Races</h5></a>
-                        </div>
+                        <a href="{% url 'races_list' %}">
+                            <div class="stats-circle center-stuff">
+                                <h5>{{ stats.total_races }} Races</h5>
+                            </div>
+                        </a>
                     </div>
 
                 </div>
@@ -64,7 +70,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="heading-section">
-                    <h4 class="center-stuff" style="color: #EE0001">Team Leaderboard</h4>
+                    <h4 class="center-stuff" style="color: #EE0001">Teams Leaderboard</h4>
                 </div>
                 <div class="row">
                     <table style="border-collapse: separate; border-spacing: 1em; color: white">
