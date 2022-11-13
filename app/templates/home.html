@@ -3,15 +3,30 @@
 {% block content %}
 
     <!-- ***** Banner Start ***** -->
-    <div class="main-banner">
+    <div>
         <div class="row">
-            <div class="col-lg-7">
+            <div class="col-lg-12">
                 <div class="header-text">
-                    <h6>Welcome To Cyborg</h6>
-                    <h4><em>Browse</em> Our Popular Games Here</h4>
-                    <div class="main-button">
-                        <a href="template_browse.html">Browse Now</a>
+                    <h1>Welcome To Formula 1</h1>
+                    <h4>Drive to Survive</h4>
+                </div>
+                <div class="row" style="padding-top: 30px">
+                    <div class="col-lg-4 col-md-4 col-sm-12 center-stuff">
+                        <div class="stats-circle center-stuff">
+                            <a href="{% url 'pilots_list' %}"><h5>{{ stats.total_pilots }} Pilots</h5></a>
+                        </div>
                     </div>
+                    <div class="col-lg-4 col-md-4 col-sm-12 center-stuff">
+                        <div class="stats-circle center-stuff">
+                            <a href="{% url 'teams_list' %}"><h5>{{ stats.total_teams }} Teams</h5></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-4 col-sm-12 center-stuff">
+                        <div class="stats-circle center-stuff">
+                            <a href="{% url 'races_list' %}"><h5>{{ stats.total_races }} Races</h5></a>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>
@@ -19,158 +34,32 @@
     <!-- ***** Banner End ***** -->
 
     <!-- ***** Most Popular Start ***** -->
-    <div class="most-popular">
+    <div class="most-popular center-stuff">
         <div class="row">
             <div class="col-lg-12">
                 <div class="heading-section">
-                    <h4><em>Most Popular</em> Right Now</h4>
+                    <h4 class="center-stuff" style="color: #EE0001">Leaderboard</h4>
                 </div>
                 <div class="row">
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="item">
-                            <img src="/images/popular-01.jpg" alt="">
-                            <h4>Fortnite<br><span>Sandbox</span></h4>
-                            <ul>
-                                <li><i class="fa fa-star"></i> 4.8</li>
-                                <li><i class="fa fa-download"></i> 2.3M</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="item">
-                            <img src="/images/popular-02.jpg" alt="">
-                            <h4>PubG<br><span>Battle S</span></h4>
-                            <ul>
-                                <li><i class="fa fa-star"></i> 4.8</li>
-                                <li><i class="fa fa-download"></i> 2.3M</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="item">
-                            <img src="/images/popular-03.jpg" alt="">
-                            <h4>Dota2<br><span>Steam-X</span></h4>
-                            <ul>
-                                <li><i class="fa fa-star"></i> 4.8</li>
-                                <li><i class="fa fa-download"></i> 2.3M</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="item">
-                            <img src="/images/popular-04.jpg" alt="">
-                            <h4>CS-GO<br><span>Legendary</span></h4>
-                            <ul>
-                                <li><i class="fa fa-star"></i> 4.8</li>
-                                <li><i class="fa fa-download"></i> 2.3M</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-lg-6">
-                        <div class="item">
-                            <div class="row">
-                                <div class="col-lg-6 col-sm-6">
-                                    <div class="item inner-item">
-                                        <img src="/images/popular-05.jpg" alt="">
-                                        <h4>Mini Craft<br><span>Legendary</span></h4>
-                                        <ul>
-                                            <li><i class="fa fa-star"></i> 4.8</li>
-                                            <li><i class="fa fa-download"></i> 2.3M</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 col-sm-6">
-                                    <div class="item">
-                                        <img src="/images/popular-06.jpg" alt="">
-                                        <h4>Eagles Fly<br><span>Matrix Games</span></h4>
-                                        <ul>
-                                            <li><i class="fa fa-star"></i> 4.8</li>
-                                            <li><i class="fa fa-download"></i> 2.3M</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="item">
-                            <img src="/images/popular-07.jpg" alt="">
-                            <h4>Warface<br><span>Max 3D</span></h4>
-                            <ul>
-                                <li><i class="fa fa-star"></i> 4.8</li>
-                                <li><i class="fa fa-download"></i> 2.3M</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-lg-3 col-sm-6">
-                        <div class="item">
-                            <img src="/images/popular-08.jpg" alt="">
-                            <h4>Warcraft<br><span>Legend</span></h4>
-                            <ul>
-                                <li><i class="fa fa-star"></i> 4.8</li>
-                                <li><i class="fa fa-download"></i> 2.3M</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="col-lg-12">
-                        <div class="main-button">
-                            <a href="template_browse.html">Discover Popular</a>
-                        </div>
-                    </div>
+                    <table style="border-collapse: separate; border-spacing: 1em; color: white">
+                        <tr>
+                            <th>Position</th>
+                            <th>Pilot</th>
+                            <th>Points</th>
+                        </tr>
+                        {% for p in leaderboard %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td><a href="{% url 'pilots_get' _id=p.pilot.id %}">{{ p.pilot.name }}</a></td>
+                                <td>{{ p.points }}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
                 </div>
             </div>
         </div>
     </div>
     <!-- ***** Most Popular End ***** -->
 
-    <!-- ***** Gaming Library Start ***** -->
-    <div class="gaming-library">
-        <div class="col-lg-12">
-            <div class="heading-section">
-                <h4><em>Your Gaming</em> Library</h4>
-            </div>
-            <div class="item">
-                <ul>
-                    <li><img src="/images/game-01.jpg" alt="" class="templatemo-item"></li>
-                    <li><h4>Dota 2</h4><span>Sandbox</span></li>
-                    <li><h4>Date Added</h4><span>24/08/2036</span></li>
-                    <li><h4>Hours Played</h4><span>634 H 22 Mins</span></li>
-                    <li><h4>Currently</h4><span>Downloaded</span></li>
-                    <li>
-                        <div class="main-border-button border-no-active"><a href="#">Donwloaded</a></div>
-                    </li>
-                </ul>
-            </div>
-            <div class="item">
-                <ul>
-                    <li><img src="/images/game-02.jpg" alt="" class="templatemo-item"></li>
-                    <li><h4>Fortnite</h4><span>Sandbox</span></li>
-                    <li><h4>Date Added</h4><span>22/06/2036</span></li>
-                    <li><h4>Hours Played</h4><span>740 H 52 Mins</span></li>
-                    <li><h4>Currently</h4><span>Downloaded</span></li>
-                    <li>
-                        <div class="main-border-button"><a href="#">Donwload</a></div>
-                    </li>
-                </ul>
-            </div>
-            <div class="item last-item">
-                <ul>
-                    <li><img src="/images/game-03.jpg" alt="" class="templatemo-item"></li>
-                    <li><h4>CS-GO</h4><span>Sandbox</span></li>
-                    <li><h4>Date Added</h4><span>21/04/2036</span></li>
-                    <li><h4>Hours Played</h4><span>892 H 14 Mins</span></li>
-                    <li><h4>Currently</h4><span>Downloaded</span></li>
-                    <li>
-                        <div class="main-border-button border-no-active"><a href="#">Donwloaded</a></div>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        <div class="col-lg-12">
-            <div class="main-button">
-                <a href="template_profile.html">View Your Library</a>
-            </div>
-        </div>
-    </div>
-    <!-- ***** Gaming Library End ***** -->
+
 {% endblock %}

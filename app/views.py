@@ -12,7 +12,15 @@ from app.forms import *
 # Home
 
 def home(req):
-    return render(req, 'home.html')
+    leaderboard = []
+    stats = {'total_races': Race.objects.count(),
+             'total_pilots': Pilot.objects.count(), 'total_teams': Team.objects.count()}
+    for pilot in Pilot.objects.all():
+        pilot_results = Result.objects.filter(pilot=pilot)
+        leaderboard.append({'pilot': pilot, 'points': sum([r.points for r in pilot_results])})
+    leaderboard.sort(key=lambda x: x['points'], reverse=True)
+    ctx = {'leaderboard': leaderboard, 'stats': stats}
+    return render(req, 'home.html', ctx)
 
 
 # Auth
