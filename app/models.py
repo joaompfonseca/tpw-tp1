@@ -96,3 +96,5 @@ class Profile(models.Model):
     profile_image = models.CharField(max_length=70)
     biography = models.CharField(max_length=150)
     favourite_pilot = models.ManyToManyField(Pilot)
+    favourite_team = models.ManyToManyField(Team)
+

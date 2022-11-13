@@ -44,13 +44,39 @@
                                       <img src="/static/images/{{ pilot.name }}.png" alt="" style="border-radius: 23px;
                                         width: 206px; height: 206px">
                                     </div>
-                                    <h4>{{ pilot.name }}</h4>
+                                    <h4 class="center-stuff">{{ pilot.name }}</h4>
                                     </div>
                                   </a>
                                   </div>
                               {% endfor %}
                           {% else %}
-                                <p>You have no favourites yet.</p>
+                                <p>You have no pilot favourites yet.</p>
+                            {% endif %}
+                      </div>
+                    </div>
+                  </div>
+                                <div class="col-lg-12">
+                    <div class="clips">
+                        <div class="col-lg-12">
+                          <div>
+                            <h4>Your Favourite Teams</h4>
+                          </div>
+                        </div>
+                    <div class="row">
+                          {% if teams %}
+                              {% for team in teams.all %}
+                                  <div class="col-lg-6 col-md-6 col-sm-12 center-stuff">
+                                  <a href="{% url 'teams_get' _id=team.id %}">
+                                    <div class="thumb">
+                                      <img src="/static/images/{{ team.name }}.png" alt="" style="border-radius: 23px;
+                                        width: 320px; height: 180px">
+                                    <h4 class="center-stuff">{{ team.name }}</h4>
+                                    </div>
+                                  </a>
+                                  </div>
+                              {% endfor %}
+                          {% else %}
+                                <p>You have no team favourites yet.</p>
                             {% endif %}
                       </div>
                     </div>

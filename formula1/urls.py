@@ -84,9 +84,17 @@ urlpatterns = [
     # Profile
     path('profile/', views.profile, name='profile'),
 
+    # Pilot Favourites
     # Add to Favourite
-    path('pilot/favourite/<int:pilot_id>', views.add_to_favourite, name='add_to_favourite'),
-
+    path('pilot/favourite/<int:pilot_id>', views.pilot_add_to_favourite, name='pilot_add_to_favourite'),
     # Remove from Favourite
-    path('pilot/remove/<int:pilot_id>', views.remove_from_favourite, name='remove_from_favourite')
+    path('pilot/remove/<int:pilot_id>', views.pilot_remove_from_favourite, name='pilot_remove_from_favourite'),
+
+
+    # Team Favourites
+    # Add to Favourite
+    path('team/favourite/<int:team_id>', views.team_add_to_favourite, name='team_add_to_favourite'),
+    # Remove from Favourite
+    path('team/remove/<int:team_id>', views.team_remove_from_favourite, name='team_remove_from_favourite'),
+
 ]

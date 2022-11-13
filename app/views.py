@@ -60,11 +60,12 @@ def profile(req):
     user_profile = Profile.objects.get(user=get_user(req))
 
     ctx = {'image': user_profile.profile_image, 'biography': user_profile.biography,
-           'pilots': user_profile.favourite_pilot}
+           'pilots': user_profile.favourite_pilot, 'teams': user_profile.favourite_team}
     return render(req, 'profile.html', ctx)
 
 
-def add_to_favourite(req, pilot_id):
+# Pilot Favourites
+def pilot_add_to_favourite(req, pilot_id):
     user_profile = Profile.objects.get(user=get_user(req))
     pilot = Pilot.objects.get(id=pilot_id)
     user_profile.favourite_pilot.add(pilot)
@@ -72,12 +73,29 @@ def add_to_favourite(req, pilot_id):
     return redirect('pilots_get', _id=pilot_id)
 
 
-def remove_from_favourite(req, pilot_id):
+def pilot_remove_from_favourite(req, pilot_id):
     user_profile = Profile.objects.get(user=get_user(req))
     pilot = Pilot.objects.get(id=pilot_id)
     user_profile.favourite_pilot.remove(pilot)
     user_profile.save()
     return redirect('pilots_get', _id=pilot_id)
+
+
+# Team Favourites
+def team_add_to_favourite(req, team_id):
+    user_profile = Profile.objects.get(user=get_user(req))
+    team = Team.objects.get(id=team_id)
+    user_profile.favourite_team.add(team)
+    user_profile.save()
+    return redirect('teams_get', _id=team_id)
+
+
+def team_remove_from_favourite(req, team_id):
+    user_profile = Profile.objects.get(user=get_user(req))
+    team = Team.objects.get(id=team_id)
+    user_profile.favourite_team.remove(team)
+    user_profile.save()
+    return redirect('teams_get', _id=team_id)
 
 # Car
 
@@ -686,6 +704,15 @@ def teams_search(req):
 def teams_get(req, _id):
     team = Team.objects.get(id=_id)
 
+    faved = None
+    if not isinstance(get_user(req), AnonymousUser):
+        if team in Profile.objects.get(user=get_user(req)).favourite_team.all():
+            faved = True
+        else:
+            faved = False
+
+    dislike_image = "/static/images/like_button.png"
+    like_image = "/static/images/dislike_button.png"
     image = "/static/images/" + team.name + ".png"
 
     pilots = Pilot.objects.filter(team=team)
@@ -695,7 +722,7 @@ def teams_get(req, _id):
     team_points = sum([p.total_points for p in pilots])
 
     ctx = {'header': 'Team Details', 'team': team, 'image': image, 'pilots': pilots, 'team_leader': team_leader
-           , 'team_points': team_points}
+           , 'team_points': team_points, 'favourite': faved, 'dislike_image': dislike_image, 'like_image': like_image}
     return render(req, 'team.html', ctx)
 
 
