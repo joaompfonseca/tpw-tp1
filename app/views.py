@@ -12,13 +12,20 @@ from app.forms import *
 # Home
 
 def home(req):
-    leaderboard = []
+    pilots_leaderboard = []
+    teams_leaderboard = []
+
     stats = {'total_races': Race.objects.count(),
              'total_pilots': Pilot.objects.count(), 'total_teams': Team.objects.count()}
     for pilot in Pilot.objects.all():
-        leaderboard.append({'pilot': pilot, 'points': pilot.total_points})
-    leaderboard.sort(key=lambda x: x['points'], reverse=True)
-    ctx = {'leaderboard': leaderboard, 'stats': stats}
+        pilots_leaderboard.append({'pilot': pilot, 'points': pilot.total_points})
+    pilots_leaderboard.sort(key=lambda x: x['points'], reverse=True)
+
+    for team in Team.objects.all():
+        teams_leaderboard.append({'team': team,
+                                  'points': sum([pilot.total_points for pilot in Pilot.objects.filter(team=team)])})
+    teams_leaderboard.sort(key=lambda x: x['points'], reverse=True)
+    ctx = {'pilots_leaderboard': pilots_leaderboard, 'stats': stats, 'teams_leaderboard': teams_leaderboard}
     return render(req, 'home.html', ctx)
 
 

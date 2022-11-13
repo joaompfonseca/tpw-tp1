@@ -38,7 +38,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="heading-section">
-                    <h4 class="center-stuff" style="color: #EE0001">Leaderboard</h4>
+                    <h4 class="center-stuff" style="color: #EE0001">Pilots Leaderboard</h4>
                 </div>
                 <div class="row">
                     <table style="border-collapse: separate; border-spacing: 1em; color: white">
@@ -47,11 +47,37 @@
                             <th>Pilot</th>
                             <th>Points</th>
                         </tr>
-                        {% for p in leaderboard %}
+                        {% for p in pilots_leaderboard %}
                             <tr>
                                 <td>{{ forloop.counter }}</td>
                                 <td><a href="{% url 'pilots_get' _id=p.pilot.id %}">{{ p.pilot.name }}</a></td>
                                 <td>{{ p.points }}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="most-popular center-stuff">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="heading-section">
+                    <h4 class="center-stuff" style="color: #EE0001">Team Leaderboard</h4>
+                </div>
+                <div class="row">
+                    <table style="border-collapse: separate; border-spacing: 1em; color: white">
+                        <tr>
+                            <th>Position</th>
+                            <th>Team</th>
+                            <th>Points</th>
+                        </tr>
+                        {% for t in teams_leaderboard %}
+                            <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td><a href="{% url 'teams_get' _id=t.team.id %}">{{ t.team.name }}</a></td>
+                                <td>{{ t.points }}</td>
                             </tr>
                         {% endfor %}
                     </table>
