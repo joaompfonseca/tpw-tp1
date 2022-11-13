@@ -163,8 +163,9 @@ def circuits_search(req):
 
 def circuits_get(req, _id):
     circuit = Circuit.objects.get(id=_id)
+    races = Race.objects.filter(circuit=circuit)
 
-    ctx = {'header': 'Circuit Details', 'circuit': circuit}
+    ctx = {'header': 'Circuit Details', 'circuit': circuit, 'races': races}
     return render(req, 'circuit.html', ctx)
 
 
@@ -457,8 +458,9 @@ def races_search(req):
 
 def races_get(req, _id):
     race = Race.objects.get(id=_id)
+    results = Result.objects.filter(race=race).order_by('position')
 
-    ctx = {'header': 'Race Details', 'race': race}
+    ctx = {'header': 'Race Details', 'race': race, 'results': results}
     return render(req, 'race.html', ctx)
 
 
@@ -509,6 +511,7 @@ def races_edit(req, _id):
 
 # Result
 
+"""
 def results_list(req):
     results = Result.objects.all()
     actions = [{'str': 'Search Result', 'url': '/results/search'}]
@@ -542,7 +545,7 @@ def results_search(req):
         form = ResultSearchForm()
         ctx = {'header': 'Search Result', 'form': form}
         return render(req, 'search.html', ctx)
-
+"""
 
 def results_get(req, _id):
     result = Result.objects.get(id=_id)

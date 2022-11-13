@@ -60,8 +60,8 @@ urlpatterns = [
     path('races/new/', views.races_new, name='races_new'),
     path('races/<int:_id>/edit/', views.races_edit, name='races_edit'),
     # Result
-    path('results/', views.results_list, name='results_list'),
-    path('results/search/', views.results_search, name='results_search'),
+    #path('results/', views.results_list, name='results_list'),
+    #path('results/search/', views.results_search, name='results_search'),
     path('results/<int:_id>/', views.results_get, name='results_get'),
     path('results/new/', views.results_new, name='results_new'),
     path('results/<int:_id>/edit/', views.results_edit, name='results_edit'),
