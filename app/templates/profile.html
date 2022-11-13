@@ -27,28 +27,27 @@
                         </a>
                   </div>
                 </div>
-                <div class="row">
                   <div class="col-lg-12">
                     <div class="clips">
-                      <div class="row">
                         <div class="col-lg-12">
                           <div>
                             <h4>Your Favourite Pilots</h4>
                           </div>
                         </div>
+                    <div class="row">
                           {% if pilots %}
                               {% for pilot in pilots.all %}
-                                  <a href="{{pilot.url}}">
-                                  <div class="col-lg-3 col-sm-6">
-                                    <div class="item">
+                                  <div class="col-lg-4 col-md-6 col-sm-12 center-stuff">
+                                  <a href="{% url 'pilots_get' _id=pilot.id %}">
+                                    <div class="">
                                     <div class="thumb">
-                                      <img src="{% static pilot.image %}" alt="" style="border-radius: 23px;"></div>
-                                    <div class="down-content">
+                                      <img src="/static/images/{{ pilot.name }}.png" alt="" style="border-radius: 23px;
+                                        width: 206px; height: 206px">
+                                    </div>
                                     <h4>{{ pilot.name }}</h4>
                                     </div>
-                                    </div>
-                                  </div>
                                   </a>
+                                  </div>
                               {% endfor %}
                           {% else %}
                                 <p>You have no favourites yet.</p>
@@ -56,7 +55,6 @@
                       </div>
                     </div>
                   </div>
-                </div>
               </div>
             </div>
           </div>
