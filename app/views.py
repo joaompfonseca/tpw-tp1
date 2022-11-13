@@ -740,8 +740,8 @@ def teamleaders_search(req):
 
 def teamleaders_get(req, _id):
     teamleader = TeamLeader.objects.get(id=_id)
-
-    ctx = {'header': 'Team Leader Details', 'teamleader': teamleader}
+    image = "/static/images/" + teamleader.name + ".jpeg"
+    ctx = {'header': 'Team Leader Details', 'teamleader': teamleader, 'image': image}
     return render(req, 'teamleader.html', ctx)
 
 
