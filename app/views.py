@@ -49,6 +49,11 @@ def signup(req):
         return render(req, 'signup.html', ctx)
 
 
+# Profile
+def profile(req):
+    return render(req, 'profile.html')
+
+
 # Car
 
 def cars_list(req):

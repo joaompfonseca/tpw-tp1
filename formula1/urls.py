@@ -80,4 +80,7 @@ urlpatterns = [
 
     # Template
     path('template_index/', views.template_index, name='template_index'),
+
+    #Profile
+    path('profile/', views.profile, name='profile'),
 ]

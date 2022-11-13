@@ -3,7 +3,7 @@
 {% if user.is_authenticated %}
 
     <li>
-        <a href="{% url 'logout' %}">
+        <a href="{% url 'profile' %}">
             Hello <strong>{{ user.username }}</strong> !
             <img src="{% static '/images/profile-header.jpg' %}">
         </a>
