@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, get_user
 from django.contrib.auth.forms import UserCreationForm
 from django.db.models import Q
 from django.shortcuts import render, redirect
@@ -38,6 +38,11 @@ def signup(req):
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
+            Profile.objects.create(
+                user=user,
+                profile_image='/images/profile.jpg',
+            )
+
             login(req, user)
             return redirect('home')
         else:
@@ -51,8 +56,27 @@ def signup(req):
 
 # Profile
 def profile(req):
-    return render(req, 'profile.html')
+    user_profile = Profile.objects.get(user=get_user(req))
 
+    ctx = {'image': user_profile.profile_image, 'biography': user_profile.biography,
+           'pilots': user_profile.favourite_pilot}
+    return render(req, 'profile.html', ctx)
+
+
+def add_to_favourite(req, pilot_id):
+    user_profile = Profile.objects.get(user=get_user(req))
+    pilot = Pilot.objects.get(id=pilot_id)
+    user_profile.favourite_pilot.add(pilot)
+    user_profile.save()
+    return redirect('pilots_get', _id=pilot_id)
+
+
+def remove_from_favourite(req, pilot_id):
+    user_profile = Profile.objects.get(user=get_user(req))
+    pilot = Pilot.objects.get(id=pilot_id)
+    user_profile.favourite_pilot.remove(pilot)
+    user_profile.save()
+    return redirect('pilots_get', _id=pilot_id)
 
 # Car
 
@@ -175,7 +199,6 @@ def circuits_search(req):
 def circuits_get(req, _id):
     circuit = Circuit.objects.get(id=_id)
     races = Race.objects.filter(circuit=circuit)
-
     ctx = {'header': 'Circuit Details', 'circuit': circuit, 'races': races}
     return render(req, 'circuit.html', ctx)
 
@@ -358,9 +381,14 @@ def pilots_search(req):
 def pilots_get(req, _id):
     pilot = Pilot.objects.get(id=_id)
 
+    if pilot in Profile.objects.get(user=get_user(req)).favourite_pilot.all():
+        faved = True
+    else:
+        faved = False
+
     image = "/static/images/" + pilot.name + ".png"
     results = Result.objects.filter(pilot=pilot).order_by('-race__date')
-    ctx = {'header': 'Pilot Details', 'pilot': pilot, 'image': image, 'results': results}
+    ctx = {'header': 'Pilot Details', 'pilot': pilot, 'image': image, 'results': results, 'favourite': faved}
     return render(req, 'pilot.html', ctx)
 
 

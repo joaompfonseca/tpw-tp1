@@ -1,8 +1,16 @@
 {% extends "layout.html" %}
 
 {% block content %}
-
-    <h2>{{ header }}</h2>
+    <div class="row">
+        <h2>{{ header }}</h2>
+        {% if user.is_authenticated %}
+            {% if favourite %}
+                <a href="{% url 'remove_from_favourite' pilot_id=pilot.id %}">Unlove it</a>
+            {% else %}
+                <a href="{% url 'add_to_favourite' pilot_id=pilot.id %}">Love it</a>
+            {% endif %}
+        {% endif %}
+    </div>
     <br>
 
     {% if user.is_authenticated and user.username == 'admin' %}
@@ -16,7 +24,7 @@
     <div class="row">
         <div class="col-lg-6 col-md-6 col-sm-12" style="padding-bottom: 30px">
             <img src="{{ image }}" alt="Pilot Image" style="width: 206px; height: 206px">
-            <p><b>Name: </b> {{ pilot.name }}</p>
+            <p style="padding-top: 10px"><b>Name: </b> {{ pilot.name }}</p>
             <p><b>Birth Date: </b> {{ pilot.date }}</p>
             <p><b>Victories: </b> {{ pilot.victories }}</p>
             <p><b>Pole Positions: </b> {{ pilot.pole_positions }}</p>

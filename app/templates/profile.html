@@ -14,7 +14,7 @@
               <div class="main-profile ">
                 <div class="row">
                   <div class="col-lg-4">
-                    <img src="{% static '/images/profile-header.jpg' %}" alt="profile picture" style="border-radius: 23px;">
+                    <img src="{% static image %}" alt="profile picture" style="border-radius: 23px;">
                   </div>
                   <div class="col-lg-4 align-self-center">
                     <div class="main-info header-text">
@@ -22,7 +22,7 @@
                     </div>
                   </div>
                     <div class="col-lg-4" style="float: right">
-                        <a href="{% url 'logout' %}" alt="logout" style="border-radius: 23px;">
+                        <a href="{% url 'logout' %}" style="border-radius: 23px;">
                             <button class="btn" style="background: red">Logout</button>
                         </a>
                   </div>
@@ -36,8 +36,8 @@
                             <h4>Your Favourite Pilots</h4>
                           </div>
                         </div>
-                          {% if favourites %}
-                              {% for pilot in favourites %}
+                          {% if pilots %}
+                              {% for pilot in pilots.all %}
                                   <a href="{{pilot.url}}">
                                   <div class="col-lg-3 col-sm-6">
                                     <div class="item">

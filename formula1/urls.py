@@ -81,6 +81,12 @@ urlpatterns = [
     # Template
     path('template_index/', views.template_index, name='template_index'),
 
-    #Profile
+    # Profile
     path('profile/', views.profile, name='profile'),
+
+    # Add to Favourite
+    path('pilot/favourite/<int:pilot_id>', views.add_to_favourite, name='add_to_favourite'),
+
+    # Remove from Favourite
+    path('pilot/remove/<int:pilot_id>', views.remove_from_favourite, name='remove_from_favourite')
 ]

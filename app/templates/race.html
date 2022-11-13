@@ -20,6 +20,7 @@
             <p><b>Date: </b>{{ race.date }}</p>
             <p><b>Season: </b>{{ race.season }}</p>
             <p><b>Circuit: </b><a href="{% url 'circuits_get' _id=race.circuit.id %}">{{ race.circuit.name }}</a></p>
+            <p><b>Fast Lap: </b>{{ race.fast_lap }}</p>
         </div>
         {% if results %}
             <div class="col-lg-6 col-md-6 col-sm-12">
