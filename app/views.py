@@ -503,6 +503,7 @@ def races_edit(req, _id):
 
 # Result
 
+"""
 def results_list(req):
     results = Result.objects.all()
     actions = [{'str': 'Search Result', 'url': '/results/search'}]
@@ -536,7 +537,7 @@ def results_search(req):
         form = ResultSearchForm()
         ctx = {'header': 'Search Result', 'form': form}
         return render(req, 'search.html', ctx)
-
+"""
 
 def results_get(req, _id):
     result = Result.objects.get(id=_id)
