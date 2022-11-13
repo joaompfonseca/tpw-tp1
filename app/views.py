@@ -450,8 +450,9 @@ def races_search(req):
 
 def races_get(req, _id):
     race = Race.objects.get(id=_id)
+    results = Result.objects.filter(race=race).order_by('position')
 
-    ctx = {'header': 'Race Details', 'race': race}
+    ctx = {'header': 'Race Details', 'race': race, 'results': results}
     return render(req, 'race.html', ctx)
 
 
