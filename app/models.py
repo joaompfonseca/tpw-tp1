@@ -35,6 +35,10 @@ class Pilot(models.Model):
     def __str__(self):
         return self.name
 
+    @property
+    def total_points(self):
+        return sum([r.points for r in self.result_set.all()])
+
 
 class Car(models.Model):
     model = models.CharField(max_length=70)
