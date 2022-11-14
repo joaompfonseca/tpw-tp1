@@ -59,9 +59,37 @@ def signup(req):
 def profile(req):
     user_profile = Profile.objects.get(user=get_user(req))
 
-    ctx = {'image': user_profile.profile_image, 'biography': user_profile.biography,
-           'pilots': user_profile.favourite_pilot, 'teams': user_profile.favourite_team}
+    ctx = {'image': 'images/' + user_profile.profile_image.url.split('/')[-1], 'biography': user_profile.biography,
+           'pilots': user_profile.favourite_pilot, 'teams': user_profile.favourite_team,
+           'user_id': user_profile.id}
     return render(req, 'profile.html', ctx)
+
+
+def profile_edit(req):
+    if not req.user.is_authenticated:
+        return redirect('login')
+    user_profile = Profile.objects.get(user=get_user(req))
+    if req.method == 'POST':
+        form = ProfileForm(req.POST, req.FILES)
+        if form.is_valid():
+            user_profile.first_name = form.cleaned_data['first_name']
+            user_profile.last_name = form.cleaned_data['last_name']
+            user_profile.email = form.cleaned_data['email']
+            user_profile.profile_image = form.cleaned_data['profile_image']
+            user_profile.biography = form.cleaned_data['biography']
+            user_profile.save()
+
+            return redirect('profile')
+    else:
+        form = ProfileForm(initial={
+            'first_name': user_profile.user.first_name,
+            'last_name': user_profile.user.last_name,
+            'email': user_profile.user.email,
+            'profile_image': user_profile.profile_image,
+            'biography': user_profile.biography
+        })
+        ctx = {'header': 'Edit Profile', 'form': form}
+        return render(req, 'edit.html', ctx)
 
 
 # Pilot Favourites
@@ -96,6 +124,7 @@ def team_remove_from_favourite(req, team_id):
     user_profile.favourite_team.remove(team)
     user_profile.save()
     return redirect('teams_get', _id=team_id)
+
 
 # Car
 
@@ -290,7 +319,6 @@ def countries_get(req, _id):
 
     circuits = Circuit.objects.filter(country=country)
     pilots = Pilot.objects.filter(country=country)
-
 
     ctx = {'header': 'Country Details', 'country': country, 'circuits': circuits, 'pilots': pilots}
     return render(req, 'country.html', ctx)
@@ -610,6 +638,7 @@ def results_search(req):
         return render(req, 'search.html', ctx)
 """
 
+
 def results_get(req, _id):
     result = Result.objects.get(id=_id)
 
@@ -722,7 +751,7 @@ def teams_get(req, _id):
     team_points = sum([p.total_points for p in pilots])
 
     ctx = {'header': 'Team Details', 'team': team, 'image': image, 'pilots': pilots, 'team_leader': team_leader
-           , 'team_points': team_points, 'favourite': faved, 'dislike_image': dislike_image, 'like_image': like_image}
+        , 'team_points': team_points, 'favourite': faved, 'dislike_image': dislike_image, 'like_image': like_image}
     return render(req, 'team.html', ctx)
 
 

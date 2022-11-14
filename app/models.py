@@ -93,7 +93,7 @@ class TeamLeader(models.Model):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    profile_image = models.CharField(max_length=70)
+    profile_image = models.ImageField(upload_to='app/static/images/')
     biography = models.CharField(max_length=150)
     favourite_pilot = models.ManyToManyField(Pilot)
     favourite_team = models.ManyToManyField(Team)

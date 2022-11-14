@@ -63,6 +63,15 @@ class PilotForm(forms.Form):
 class PilotSearchForm(forms.Form):
     name = forms.CharField(label='Name:', max_length=70)
 
+# Profile
+
+class ProfileForm(forms.Form):
+    first_name = forms.CharField(label='First name:', max_length=150)
+    last_name = forms.CharField(label='Last name:', max_length=150)
+    email = forms.EmailField(label='Email:')
+    profile_image = forms.ImageField(label='Image:')
+    biography = forms.CharField(label='Biography:', max_length=150)
+
 
 # Race
 

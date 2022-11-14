@@ -83,6 +83,7 @@ urlpatterns = [
 
     # Profile
     path('profile/', views.profile, name='profile'),
+    path('profile/edit/', views.profile_edit, name='profile_edit'),
 
     # Pilot Favourites
     # Add to Favourite
