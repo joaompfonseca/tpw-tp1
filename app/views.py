@@ -280,7 +280,6 @@ def circuits_new(req):
                 name=form.cleaned_data['name'],
                 length=form.cleaned_data['length'],
                 location=form.cleaned_data['location'],
-                fast_lap=form.cleaned_data['fast_lap'],
                 last_winner=form.cleaned_data['last_winner'],
                 country=form.cleaned_data['country'],
             )
@@ -303,7 +302,6 @@ def circuits_edit(req, _id):
             circuit.name = form.cleaned_data['name']
             circuit.length = form.cleaned_data['length']
             circuit.location = form.cleaned_data['location']
-            circuit.fast_lap = form.cleaned_data['fast_lap']
             circuit.last_winner = form.cleaned_data['last_winner']
             circuit.country = form.cleaned_data['country']
             circuit.save()
@@ -314,7 +312,6 @@ def circuits_edit(req, _id):
             'name': circuit.name,
             'length': circuit.length,
             'location': circuit.location,
-            'fast_lap': circuit.fast_lap,
             'last_winner': circuit.last_winner,
             'country': circuit.country.id
         })
@@ -623,6 +620,7 @@ def races_new(req):
                 name=form.cleaned_data['name'],
                 date=form.cleaned_data['date'],
                 season=form.cleaned_data['season'],
+                fast_lap=form.cleaned_data['fast_lap'],
                 circuit=form.cleaned_data['circuit'],
             )
 
@@ -644,6 +642,7 @@ def races_edit(req, _id):
             race.name = form.cleaned_data['name']
             race.date = form.cleaned_data['date']
             race.season = form.cleaned_data['season']
+            race.fast_lap = form.cleaned_data['fast_lap']
             race.circuit = form.cleaned_data['circuit']
             race.save()
 
@@ -653,6 +652,7 @@ def races_edit(req, _id):
             'name': race.name,
             'date': race.date,
             'season': race.season,
+            'fast_lap': race.fast_lap,
             'circuit': race.circuit.id
         })
         ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1],

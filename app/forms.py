@@ -25,7 +25,6 @@ class CircuitForm(forms.Form):
     name = forms.CharField(label='Name:', max_length=70)
     length = forms.IntegerField(label='Length:')
     location = forms.CharField(label='Location:', max_length=70)
-    fast_lap = forms.TimeField(label='Fast Lap:')
     last_winner = forms.ModelChoiceField(label='Last Winner:', queryset=Pilot.objects.all())
     country = forms.ModelChoiceField(label='Country:', queryset=Country.objects.all())
 
@@ -79,6 +78,7 @@ class RaceForm(forms.Form):
     name = forms.CharField(label='Name:', max_length=70)
     date = forms.DateField(label='Date:')
     season = forms.IntegerField(label='Season:')
+    fast_lap = forms.TimeField(label='Fast Lap:')
     circuit = forms.ModelChoiceField(label='Circuit:', queryset=Circuit.objects.all())
 
 
