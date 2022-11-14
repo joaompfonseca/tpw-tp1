@@ -97,6 +97,7 @@ def team_remove_from_favourite(req, team_id):
     user_profile.save()
     return redirect('teams_get', _id=team_id)
 
+
 # Car
 
 def cars_list(req):
@@ -143,7 +144,8 @@ def cars_search(req):
             return render(req, 'list.html', ctx)
     else:
         form = CarSearchForm()
-        ctx = {'header': 'Search Car', 'form': form}
+        cars = Car.objects.all()
+        ctx = {'header': 'Search Car', 'form': form, 'options': cars, 'id_field': 'id_model', 'id_field2': 'id_pilot'}
         return render(req, 'search.html', ctx)
 
 
@@ -211,7 +213,8 @@ def circuits_search(req):
     else:
         # If GET (or any other method), create blank form
         form = CircuitSearchForm()
-        ctx = {'header': 'Search Circuit', 'form': form}
+        circuits = Circuit.objects.all()
+        ctx = {'header': 'Search Circuit', 'form': form, 'options': circuits, 'id_field': 'id_name'}
         return render(req, 'search.html', ctx)
 
 
@@ -291,7 +294,6 @@ def countries_get(req, _id):
     circuits = Circuit.objects.filter(country=country)
     pilots = Pilot.objects.filter(country=country)
 
-
     ctx = {'header': 'Country Details', 'country': country, 'circuits': circuits, 'pilots': pilots}
     return render(req, 'country.html', ctx)
 
@@ -333,7 +335,8 @@ def countries_search(req):
             return render(req, 'list.html', ctx)
     else:
         form = CountrySearchForm()
-        ctx = {'header': 'Search Country', 'form': form}
+        countries = Country.objects.all()
+        ctx = {'header': 'Search Country', 'form': form, 'options': countries, 'id_field': 'id_designation'}
         return render(req, 'search.html', ctx)
 
 
@@ -392,8 +395,9 @@ def pilots_search(req):
             return render(req, 'list.html', ctx)
     else:
         # If GET (or any other method), create blank form
+        pilots = Pilot.objects.all()
         form = PilotSearchForm()
-        ctx = {'header': 'Search Pilot', 'form': form}
+        ctx = {'header': 'Search Pilot', 'form': form, 'options': pilots, 'id_field': "id_name"}
         return render(req, 'search.html', ctx)
 
 
@@ -515,7 +519,8 @@ def races_search(req):
     else:
         # If GET (or any other method), create blank form
         form = RaceSearchForm()
-        ctx = {'header': 'Search Race', 'form': form}
+        races = Race.objects.all()
+        ctx = {'header': 'Search Race', 'form': form, 'options': races, 'id_field': "id_name"}
         return render(req, 'search.html', ctx)
 
 
@@ -610,6 +615,7 @@ def results_search(req):
         return render(req, 'search.html', ctx)
 """
 
+
 def results_get(req, _id):
     result = Result.objects.get(id=_id)
 
@@ -697,7 +703,8 @@ def teams_search(req):
     else:
         # If GET (or any other method), create blank form
         form = TeamSearchForm()
-        ctx = {'header': 'Search Team', 'form': form}
+        teams = Team.objects.all()
+        ctx = {'header': 'Search Team', 'form': form, 'options': teams, 'id_field': "id_name"}
         return render(req, 'search.html', ctx)
 
 
@@ -722,7 +729,7 @@ def teams_get(req, _id):
     team_points = sum([p.total_points for p in pilots])
 
     ctx = {'header': 'Team Details', 'team': team, 'image': image, 'pilots': pilots, 'team_leader': team_leader
-           , 'team_points': team_points, 'favourite': faved, 'dislike_image': dislike_image, 'like_image': like_image}
+        , 'team_points': team_points, 'favourite': faved, 'dislike_image': dislike_image, 'like_image': like_image}
     return render(req, 'team.html', ctx)
 
 
@@ -803,7 +810,8 @@ def teamleaders_search(req):
     else:
         # If GET (or any other method), create blank form
         form = TeamLeaderSearchForm()
-        ctx = {'header': 'Search Team Leader', 'form': form}
+        teamleadres = TeamLeader.objects.all()
+        ctx = {'header': 'Search Team Leader', 'form': form, 'options': teamleadres, 'id_field': "id_name"}
         return render(req, 'search.html', ctx)
 
 
