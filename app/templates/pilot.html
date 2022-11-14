@@ -12,7 +12,7 @@
                 </a>
             {% else %}
                 <a href="{% url 'pilot_add_to_favourite' pilot_id=pilot.id %}">
-                <img src="{{ dislike_image }}" alt="Dislike Image" style="width: 25px; height: 22px;
+                    <img src="{{ dislike_image }}" alt="Dislike Image" style="width: 25px; height: 22px;
                     margin-top: 9px; margin-left: 10px">
                 </a>
             {% endif %}
@@ -53,18 +53,27 @@
                     <th>Position</th>
                     <th>Race</th>
                     <th>Points</th>
+                    {% if user.is_authenticated and user.username == 'admin' %}
+                        <th>Actions</th>
+                    {% endif %}
                 </tr>
                 {% for r in results %}
                     <tr>
                         <td>{{ r.position }}</td>
                         <td><a href="{% url 'races_get' _id=r.race.id %}">{{ r.race }}</a></td>
                         <td>{{ r.points }}</td>
+                        {% if user.is_authenticated and user.username == 'admin' %}
+                            <td><a href="{% url 'results_edit' _id=r.id %}">Edit</a></td>
+                        {% endif %}
                     </tr>
                 {% endfor %}
                 <tr>
                     <td></td>
                     <td><b>Total Points:</b></td>
                     <td><b>{{ pilot.total_points }}</b></td>
+                    {% if user.is_authenticated and user.username == 'admin' %}
+                        <td></td>
+                    {% endif %}
                 </tr>
             </table>
         </div>

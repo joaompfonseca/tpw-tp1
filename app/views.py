@@ -59,9 +59,38 @@ def signup(req):
 def profile(req):
     user_profile = Profile.objects.get(user=get_user(req))
 
-    ctx = {'image': user_profile.profile_image, 'biography': user_profile.biography,
-           'pilots': user_profile.favourite_pilot, 'teams': user_profile.favourite_team}
+    ctx = {'image': 'images/' + user_profile.profile_image.url.split('/')[-1], 'biography': user_profile.biography,
+           'pilots': user_profile.favourite_pilot, 'teams': user_profile.favourite_team,
+           'user_id': user_profile.id}
     return render(req, 'profile.html', ctx)
+
+
+def profile_edit(req):
+    if not req.user.is_authenticated:
+        return redirect('login')
+    user_profile = Profile.objects.get(user=get_user(req))
+    if req.method == 'POST':
+        form = ProfileForm(req.POST, req.FILES)
+        if form.is_valid() or req.POST.get('profile_image') == '':
+            user_profile.first_name = form.cleaned_data['first_name']
+            user_profile.last_name = form.cleaned_data['last_name']
+            user_profile.email = form.cleaned_data['email']
+            if req.POST.get('profile_image') != '':
+                user_profile.profile_image = form.cleaned_data['profile_image']
+            user_profile.biography = form.cleaned_data['biography']
+            user_profile.save()
+
+            return redirect('profile')
+    else:
+        form = ProfileForm(initial={
+            'first_name': user_profile.user.first_name,
+            'last_name': user_profile.user.last_name,
+            'email': user_profile.user.email,
+            'profile_image': user_profile.profile_image,
+            'biography': user_profile.biography
+        })
+        ctx = {'header': 'Edit Profile', 'form': form}
+        return render(req, 'edit.html', ctx)
 
 
 # Pilot Favourites
@@ -381,17 +410,32 @@ def pilots_search(req):
         form = PilotSearchForm(req.POST)
         if form.is_valid():
             name = form.cleaned_data['name']
-
             query = f'Pilot.name={name}'
-            # if 'searched' in req.session and req.session['searched'] == query:
-            #     return HttpResponse('You have searched for the same thing before. Please try again.')
-            # req.session['searched'] = query
+            if 'searched' in req.session:
+                if query in req.session['searched'].keys():
+                    lst = req.session['searched'][query]
+                    print("cache was used")
+                else:
+                    pilots = Pilot.objects.filter(name__icontains=name)
+                    lst = [[{'str': p.name, 'url': f'/pilots/{p.id}'}]
+                           for p in pilots]
+                    if len(req.session['searched'].keys()) > 5:
+                        # removes first added element to cache
+                        (k := next(iter(req.session['searched'])), req.session['searched'].pop(k))
+                    req.session['searched'][query] = pilots
 
-            pilots = Pilot.objects.filter(name__icontains=name)
+            else:
+                req.session['searched'] = {}
+                # make query
+                pilots = Pilot.objects.filter(name__icontains=name)
+                lst = [[{'str': p.name, 'url': f'/pilots/{p.id}'}]
+                       for p in pilots]
+                if len(req.session['searched'].keys()) > 5:
+                    # removes first added element to cache
+                    (k := next(iter(req.session['searched'])), req.session['searched'].pop(k))
+                req.session['searched'][query] = lst
 
-            lst = [[{'str': p.name, 'url': f'/pilots/{p.id}'}]
-                   for p in pilots]
-            ctx = {'header': 'List of Pilots', 'list': lst, 'query': query}
+            ctx = {'header': 'List of Pilots', 'list': lst, 'query': name}
             return render(req, 'list.html', ctx)
     else:
         # If GET (or any other method), create blank form
@@ -629,14 +673,14 @@ def results_new(req):
     if req.method == 'POST':
         form = ResultForm(req.POST)
         if form.is_valid():
-            Result.objects.create(
+            result = Result.objects.create(
                 position=form.cleaned_data['position'],
                 pilot=form.cleaned_data['pilot'],
-                race=form.cleaned['race'],
+                race=form.cleaned_data['race'],
                 points=form.cleaned_data['points']
             )
 
-            return redirect('results_list')
+            return redirect('races_get', _id=result.race.id)
     else:
         form = ResultForm()
         ctx = {'header': 'New Result', 'form': form}
@@ -656,7 +700,7 @@ def results_edit(req, _id):
             result.points = form.cleaned_data['points']
             result.save()
 
-            return redirect('results_get', _id=_id)
+            return redirect('races_get', _id=result.race.id)
     else:
         form = ResultForm(initial={
             'position': result.position,
@@ -803,7 +847,7 @@ def teamleaders_search(req):
 
             teamleaders = TeamLeader.objects.filter(name__icontains=name)
 
-            lst = [[{'str': tl.name, 'url': f'/teams/{tl.id}'}]
+            lst = [[{'str': tl.name, 'url': f'/teamleaders/{tl.id}'}]
                    for tl in teamleaders]
             ctx = {'header': 'List of Team Leaders', 'list': lst, 'query': query}
             return render(req, 'list.html', ctx)
