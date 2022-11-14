@@ -486,7 +486,7 @@ def pilots_get(req, _id):
 
     results = Result.objects.filter(pilot=pilot).order_by('-race__date')
     ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1],
-           'header': 'Pilot Details', 'pilot': pilot, 'image': image, 'results': results, 'favourite': faved,
+           'header': 'Pilot Details', 'pilot': pilot, 'pilot_image': image, 'results': results, 'favourite': faved,
            'dislike_image': dislike_image, 'like_image': like_image}
     return render(req, 'pilot.html', ctx)
 
@@ -819,7 +819,7 @@ def teams_get(req, _id):
     team_points = sum([p.total_points for p in pilots])
 
     ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1],
-           'header': 'Team Details', 'team': team, 'image': image, 'pilots': pilots, 'team_leader': team_leader
+           'header': 'Team Details', 'team': team, 'team_image': image, 'pilots': pilots, 'team_leader': team_leader
         , 'team_points': team_points, 'favourite': faved, 'dislike_image': dislike_image, 'like_image': like_image}
     return render(req, 'team.html', ctx)
 
@@ -916,7 +916,7 @@ def teamleaders_get(req, _id):
     teamleader = TeamLeader.objects.get(id=_id)
     image = "/static/images/" + teamleader.name + ".jpeg"
     ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1],
-           'header': 'Team Leader Details', 'teamleader': teamleader, 'image': image}
+           'header': 'Team Leader Details', 'teamleader': teamleader, 'teamleader_image': image}
     return render(req, 'teamleader.html', ctx)
 
 

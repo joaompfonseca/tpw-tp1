@@ -11,7 +11,7 @@
         <a href="{% url 'teamleaders_edit' _id=teamleader.id %}">Edit Team Leader</a>
     </p>
     {% endif %}
-    <img src="{{ image }}" alt="TeamLeader Image" style="width: auto; height: auto">
+    <img src="{{ teamleader_image }}" alt="TeamLeader Image" style="width: auto; height: auto">
     <p><b>Name: </b>{{ teamleader.name }}</p>
     <p><b>Team: </b><a href="{% url 'teams_get' _id=teamleader.team.id %}">{{ teamleader.team.name }}</a></p>
 
