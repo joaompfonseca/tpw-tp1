@@ -26,7 +26,8 @@ def home(req):
         teams_leaderboard.append({'team': team,
                                   'points': sum([pilot.total_points for pilot in Pilot.objects.filter(team=team)])})
     teams_leaderboard.sort(key=lambda x: x['points'], reverse=True)
-    ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1],
+    ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[
+        -1] if req.user.is_authenticated else None,
            'pilots_leaderboard': pilots_leaderboard, 'stats': stats, 'teams_leaderboard': teams_leaderboard}
     return render(req, 'home.html', ctx)
 
@@ -52,7 +53,8 @@ def signup(req):
             return render(req, 'signup.html', ctx)
     else:
         form = UserCreationForm()
-        ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1],
+        ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[
+            -1] if req.user.is_authenticated else None,
                'form': form}
         return render(req, 'signup.html', ctx)
 
@@ -92,7 +94,8 @@ def profile_edit(req):
             'profile_image': user_profile.profile_image,
             'biography': user_profile.biography
         })
-        ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1],
+        ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[
+            -1] if req.user.is_authenticated else None,
                'header': 'Edit Profile', 'form': form}
         return render(req, 'edit.html', ctx)
 
@@ -140,7 +143,8 @@ def cars_list(req):
         actions += [{'str': 'New Car', 'url': '/cars/new'}]
     lst = [[{'str': c.model, 'url': f'/cars/{c.id}'}] for c in cars]
 
-    ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1],
+    ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[
+        -1] if req.user.is_authenticated else None,
            'header': 'Cars', 'actions': actions, 'list': lst}
     return render(req, 'list.html', ctx)
 
@@ -159,7 +163,8 @@ def cars_new(req):
             return redirect('cars_list')
     else:
         form = CarForm()
-        ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1],
+        ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[
+            -1] if req.user.is_authenticated else None,
                'header': 'New Car', 'form': form}
         return render(req, 'new.html', ctx)
 
@@ -182,7 +187,8 @@ def cars_search(req):
     else:
         form = CarSearchForm()
         cars = Car.objects.all()
-        ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1],
+        ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[
+            -1] if req.user.is_authenticated else None,
                'header': 'Search Car', 'form': form, 'options': cars, 'id_field': 'id_model', 'id_field2': 'id_pilot'}
         return render(req, 'search.html', ctx)
 
@@ -190,7 +196,8 @@ def cars_search(req):
 def cars_get(req, _id):
     car = Car.objects.get(id=_id)
 
-    ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1],
+    ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[
+        -1] if req.user.is_authenticated else None,
            'header': 'Car Details', 'car': car}
     return render(req, 'car.html', ctx)
 
@@ -213,7 +220,8 @@ def cars_edit(req, _id):
             'engine': car.engine,
             'weight': car.weight,
             'pilot': car.pilot})
-        ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1],
+        ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[
+            -1] if req.user.is_authenticated else None,
                'header': 'Edit Car', 'form': form}
         return render(req, 'edit.html', ctx)
 
@@ -227,7 +235,8 @@ def circuits_list(req):
         actions += [{'str': 'New Circuit', 'url': '/circuits/new'}]
     lst = [[{'str': c.name, 'url': f'/circuits/{c.id}'}] for c in circuits]
 
-    ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1],
+    ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[
+        -1] if req.user.is_authenticated else None,
            'header': 'List of Circuits', 'actions': actions, 'list': lst}
     return render(req, 'list.html', ctx)
 
@@ -257,7 +266,8 @@ def circuits_search(req):
         # If GET (or any other method), create blank form
         form = CircuitSearchForm()
         circuits = Circuit.objects.all()
-        ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1],
+        ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[
+            -1] if req.user.is_authenticated else None,
                'header': 'Search Circuit', 'form': form, 'options': circuits, 'id_field': 'id_name'}
         return render(req, 'search.html', ctx)
 
@@ -265,7 +275,8 @@ def circuits_search(req):
 def circuits_get(req, _id):
     circuit = Circuit.objects.get(id=_id)
     races = Race.objects.filter(circuit=circuit)
-    ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1],
+    ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[
+        -1] if req.user.is_authenticated else None,
            'header': 'Circuit Details', 'circuit': circuit, 'races': races}
     return render(req, 'circuit.html', ctx)
 
@@ -287,7 +298,8 @@ def circuits_new(req):
             return redirect('circuits_list')
     else:
         form = CircuitForm()
-        ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1],
+        ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[
+            -1] if req.user.is_authenticated else None,
                'header': 'New Circuit', 'form': form}
         return render(req, 'new.html', ctx)
 
@@ -315,7 +327,8 @@ def circuits_edit(req, _id):
             'last_winner': circuit.last_winner,
             'country': circuit.country.id
         })
-        ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1],
+        ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[
+            -1] if req.user.is_authenticated else None,
                'header': 'Edit Circuit', 'form': form}
         return render(req, 'edit.html', ctx)
 
@@ -328,7 +341,8 @@ def countries_list(req):
     if req.user.is_authenticated and req.user.username == 'admin':
         actions += [{'str': 'New Country', 'url': '/countries/new'}]
     lst = [[{'str': c.designation, 'url': f'/countries/{c.id}'}] for c in countries]
-    ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1],
+    ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[
+        -1] if req.user.is_authenticated else None,
            'header': 'Countries', 'actions': actions, 'list': lst}
     return render(req, 'list.html', ctx)
 
@@ -339,7 +353,8 @@ def countries_get(req, _id):
     circuits = Circuit.objects.filter(country=country)
     pilots = Pilot.objects.filter(country=country)
 
-    ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1],
+    ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[
+        -1] if req.user.is_authenticated else None,
            'header': 'Country Details', 'country': country, 'circuits': circuits, 'pilots': pilots}
     return render(req, 'country.html', ctx)
 
@@ -358,7 +373,8 @@ def countries_new(req):
             return redirect('countries_list')
     else:
         form = CountryForm()
-        ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1],
+        ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[
+            -1] if req.user.is_authenticated else None,
                'header': 'New Country', 'form': form}
         return render(req, 'new.html', ctx)
 
@@ -385,7 +401,8 @@ def countries_search(req):
     else:
         form = CountrySearchForm()
         countries = Country.objects.all()
-        ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1],
+        ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[
+            -1] if req.user.is_authenticated else None,
                'header': 'Search Country', 'form': form, 'options': countries, 'id_field': 'id_designation'}
         return render(req, 'search.html', ctx)
 
@@ -407,7 +424,8 @@ def countries_edit(req, _id):
             'designation': country.designation,
             'code': country.code
         })
-        ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1],
+        ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[
+            -1] if req.user.is_authenticated else None,
                'header': 'Edit Country', 'form': form}
         return render(req, 'edit.html', ctx)
 
@@ -421,7 +439,8 @@ def pilots_list(req):
         actions += [{'str': 'New Pilot', 'url': '/pilots/new'}]
     lst = [[{'str': p.name, 'url': f'/pilots/{p.id}'}] for p in pilots]
 
-    ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1],
+    ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[
+        -1] if req.user.is_authenticated else None,
            'header': 'List of Pilots', 'actions': actions, 'list': lst}
     return render(req, 'list.html', ctx)
 
@@ -466,7 +485,8 @@ def pilots_search(req):
         # If GET (or any other method), create blank form
         pilots = Pilot.objects.all()
         form = PilotSearchForm()
-        ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1],
+        ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[
+            -1] if req.user.is_authenticated else None,
                'header': 'Search Pilot', 'form': form, 'options': pilots, 'id_field': "id_name"}
         return render(req, 'search.html', ctx)
 
@@ -485,7 +505,8 @@ def pilots_get(req, _id):
     like_image = "/static/images/dislike_button.png"
 
     results = Result.objects.filter(pilot=pilot).order_by('-race__date')
-    ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1],
+    ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[
+        -1] if req.user.is_authenticated else None,
            'header': 'Pilot Details', 'pilot': pilot, 'pilot_image': image, 'results': results, 'favourite': faved,
            'dislike_image': dislike_image, 'like_image': like_image}
     return render(req, 'pilot.html', ctx)
@@ -514,7 +535,8 @@ def pilots_new(req):
             return redirect('pilots_list')
     else:
         form = PilotForm()
-        ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1],
+        ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[
+            -1] if req.user.is_authenticated else None,
                'header': 'New Pilot', 'form': form}
         return render(req, 'new.html', ctx)
 
@@ -552,7 +574,8 @@ def pilots_edit(req, _id):
             'team': pilot.team.id,
             'country': [c.id for c in pilot.country.all()]
         })
-        ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1],
+        ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[
+            -1] if req.user.is_authenticated else None,
                'header': 'Edit Pilot', 'form': form}
         return render(req, 'edit.html', ctx)
 
@@ -566,7 +589,8 @@ def races_list(req):
         actions += [{'str': 'New Race', 'url': '/races/new'}]
     lst = [[{'str': r.name, 'url': f'/races/{r.id}'}] for r in races]
 
-    ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1],
+    ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[
+        -1] if req.user.is_authenticated else None,
            'header': 'List of Races', 'actions': actions, 'list': lst}
     return render(req, 'list.html', ctx)
 
@@ -596,7 +620,8 @@ def races_search(req):
         # If GET (or any other method), create blank form
         form = RaceSearchForm()
         races = Race.objects.all()
-        ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1],
+        ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[
+            -1] if req.user.is_authenticated else None,
                'header': 'Search Race', 'form': form, 'options': races, 'id_field': "id_name"}
         return render(req, 'search.html', ctx)
 
@@ -605,7 +630,8 @@ def races_get(req, _id):
     race = Race.objects.get(id=_id)
     results = Result.objects.filter(race=race).order_by('position')
 
-    ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1],
+    ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[
+        -1] if req.user.is_authenticated else None,
            'header': 'Race Details', 'race': race, 'results': results}
     return render(req, 'race.html', ctx)
 
@@ -627,7 +653,8 @@ def races_new(req):
             return redirect('races_list')
     else:
         form = RaceForm()
-        ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1],
+        ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[
+            -1] if req.user.is_authenticated else None,
                'header': 'New Race', 'form': form}
         return render(req, 'new.html', ctx)
 
@@ -655,7 +682,8 @@ def races_edit(req, _id):
             'fast_lap': race.fast_lap,
             'circuit': race.circuit.id
         })
-        ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1],
+        ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[
+            -1] if req.user.is_authenticated else None,
                'header': 'Edit Race', 'form': form}
         return render(req, 'edit.html', ctx)
 
@@ -670,7 +698,7 @@ def results_list(req):
         actions += [{'str': 'New Result', 'url': '/results/new'}]
     lst = [[{'str': r.pilot, 'url': f'/results/{r.id}'}] for r in results]
 
-    ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1],'header': 'List of Results', 'actions': actions, 'list': lst}
+    ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1] if req.user.is_authenticated else None,'header': 'List of Results', 'actions': actions, 'list': lst}
     return render(req, 'list.html', ctx)
 
 
@@ -694,7 +722,7 @@ def results_search(req):
     else:
         # If GET (or any other method), create blank form
         form = ResultSearchForm()
-        ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1],'header': 'Search Result', 'form': form}
+        ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1] if req.user.is_authenticated else None,'header': 'Search Result', 'form': form}
         return render(req, 'search.html', ctx)
 """
 
@@ -702,7 +730,8 @@ def results_search(req):
 def results_get(req, _id):
     result = Result.objects.get(id=_id)
 
-    ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1],
+    ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[
+        -1] if req.user.is_authenticated else None,
            'header': 'Result Details', 'result': result}
     return render(req, 'result.html', ctx)
 
@@ -723,7 +752,8 @@ def results_new(req):
             return redirect('races_get', _id=result.race.id)
     else:
         form = ResultForm()
-        ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1],
+        ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[
+            -1] if req.user.is_authenticated else None,
                'header': 'New Result', 'form': form}
         return render(req, 'new.html', ctx)
 
@@ -749,7 +779,8 @@ def results_edit(req, _id):
             'race': result.race,
             'points': result.points
         })
-        ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1],
+        ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[
+            -1] if req.user.is_authenticated else None,
                'header': 'Edit Result', 'form': form}
         return render(req, 'edit.html', ctx)
 
@@ -763,7 +794,8 @@ def teams_list(req):
         actions += [{'str': 'New Team', 'url': '/teams/new'}]
     lst = [[{'str': t.name, 'url': f'/teams/{t.id}'}] for t in teams]
 
-    ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1],
+    ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[
+        -1] if req.user.is_authenticated else None,
            'header': 'List of Teams', 'actions': actions, 'list': lst}
     return render(req, 'list.html', ctx)
 
@@ -793,7 +825,8 @@ def teams_search(req):
         # If GET (or any other method), create blank form
         form = TeamSearchForm()
         teams = Team.objects.all()
-        ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1],
+        ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[
+            -1] if req.user.is_authenticated else None,
                'header': 'Search Team', 'form': form, 'options': teams, 'id_field': "id_name"}
         return render(req, 'search.html', ctx)
 
@@ -818,7 +851,8 @@ def teams_get(req, _id):
 
     team_points = sum([p.total_points for p in pilots])
 
-    ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1],
+    ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[
+        -1] if req.user.is_authenticated else None,
            'header': 'Team Details', 'team': team, 'team_image': image, 'pilots': pilots, 'team_leader': team_leader
         , 'team_points': team_points, 'favourite': faved, 'dislike_image': dislike_image, 'like_image': like_image}
     return render(req, 'team.html', ctx)
@@ -839,7 +873,8 @@ def teams_new(req):
             return redirect('teams_list')
     else:
         form = TeamForm()
-        ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1],
+        ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[
+            -1] if req.user.is_authenticated else None,
                'header': 'New Team', 'form': form}
         return render(req, 'new.html', ctx)
 
@@ -863,7 +898,8 @@ def teams_edit(req, _id):
             'date': team.date,
             'championships': team.championships
         })
-        ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1],
+        ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[
+            -1] if req.user.is_authenticated else None,
                'header': 'Edit Team', 'form': form}
         return render(req, 'edit.html', ctx)
 
@@ -877,7 +913,8 @@ def teamleaders_list(req):
         actions += [{'str': 'New Team Leader', 'url': '/teamleaders/new'}]
     lst = [[{'str': tl.name, 'url': f'/teamleaders/{tl.id}'}] for tl in teamleaders]
 
-    ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1],
+    ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[
+        -1] if req.user.is_authenticated else None,
            'header': 'List of Team Leaders', 'actions': actions, 'list': lst}
     return render(req, 'list.html', ctx)
 
@@ -907,7 +944,8 @@ def teamleaders_search(req):
         # If GET (or any other method), create blank form
         form = TeamLeaderSearchForm()
         teamleadres = TeamLeader.objects.all()
-        ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1],
+        ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[
+            -1] if req.user.is_authenticated else None,
                'header': 'Search Team Leader', 'form': form, 'options': teamleadres, 'id_field': "id_name"}
         return render(req, 'search.html', ctx)
 
@@ -915,7 +953,8 @@ def teamleaders_search(req):
 def teamleaders_get(req, _id):
     teamleader = TeamLeader.objects.get(id=_id)
     image = "/static/images/" + teamleader.name + ".jpeg"
-    ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1],
+    ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[
+        -1] if req.user.is_authenticated else None,
            'header': 'Team Leader Details', 'teamleader': teamleader, 'teamleader_image': image}
     return render(req, 'teamleader.html', ctx)
 
@@ -934,7 +973,8 @@ def teamleaders_new(req):
             return redirect('teamleaders_list')
     else:
         form = TeamLeaderForm()
-        ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1],
+        ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[
+            -1] if req.user.is_authenticated else None,
                'header': 'New Team Leader', 'form': form}
         return render(req, 'new.html', ctx)
 
@@ -956,7 +996,8 @@ def teamleaders_edit(req, _id):
             'name': teamleader.name,
             'team': teamleader.team.id
         })
-        ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1],
+        ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[
+            -1] if req.user.is_authenticated else None,
                'header': 'Edit Team Leader', 'form': form}
         return render(req, 'edit.html', ctx)
 
