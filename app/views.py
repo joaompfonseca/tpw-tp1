@@ -48,7 +48,7 @@ def signup(req):
             return redirect('home')
         else:
             ctx = {
-                'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1],
+                'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1] if req.user.is_authenticated else None,
                 'form': form}
             return render(req, 'signup.html', ctx)
     else:
@@ -62,7 +62,7 @@ def signup(req):
 # Profile
 def profile(req):
     user_profile = Profile.objects.get(user=get_user(req))
-    ctx = {'image': 'images/profiles/' + user_profile.profile_image.url.split('/')[-1],
+    ctx = {'image': 'images/profiles/' + user_profile.profile_image.url.split('/')[-1] if req.user.is_authenticated else None,
            'biography': user_profile.biography,
            'pilots': user_profile.favourite_pilot,
            'teams': user_profile.favourite_team,
@@ -181,7 +181,7 @@ def cars_search(req):
 
             query = f'Car.model={model};Car.pilot={pilot}'
             ctx = {
-                'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1],
+                'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1] if req.user.is_authenticated else None,
                 'header': 'List of Cars', 'list': lst, 'query': query}
             return render(req, 'list.html', ctx)
     else:
@@ -259,7 +259,7 @@ def circuits_search(req):
             lst = [[{'str': c.name, 'url': f'/circuits/{c.id}'}]
                    for c in circuits]
             ctx = {
-                'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1],
+                'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1] if req.user.is_authenticated else None,
                 'header': 'List of Circuits', 'list': lst, 'query': query}
             return render(req, 'list.html', ctx)
     else:
@@ -395,7 +395,7 @@ def countries_search(req):
             lst = [[{'str': c.designation, 'url': f'/countries/{c.id}'}]
                    for c in countries]
             ctx = {
-                'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1],
+                'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1] if req.user.is_authenticated else None,
                 'header': 'Countries', 'list': lst, 'query': query}
             return render(req, 'list.html', ctx)
     else:
@@ -478,7 +478,7 @@ def pilots_search(req):
                 req.session['searched'][query] = lst
 
             ctx = {
-                'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1],
+                'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1] if req.user.is_authenticated else None,
                 'header': 'List of Pilots', 'list': lst, 'query': name}
             return render(req, 'list.html', ctx)
     else:
@@ -613,7 +613,7 @@ def races_search(req):
             lst = [[{'str': r.name, 'url': f'/races/{r.id}'}]
                    for r in races]
             ctx = {
-                'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1],
+                'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1] if req.user.is_authenticated else None,
                 'header': 'List of Races', 'list': lst, 'query': query}
             return render(req, 'list.html', ctx)
     else:
@@ -818,7 +818,7 @@ def teams_search(req):
             lst = [[{'str': t.name, 'url': f'/teams/{t.id}'}]
                    for t in teams]
             ctx = {
-                'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1],
+                'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1] if req.user.is_authenticated else None,
                 'header': 'List of Teams', 'list': lst, 'query': query}
             return render(req, 'list.html', ctx)
     else:
@@ -937,7 +937,7 @@ def teamleaders_search(req):
             lst = [[{'str': tl.name, 'url': f'/teamleaders/{tl.id}'}]
                    for tl in teamleaders]
             ctx = {
-                'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1],
+                'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1] if req.user.is_authenticated else None,
                 'header': 'List of Team Leaders', 'list': lst, 'query': query}
             return render(req, 'list.html', ctx)
     else:
