@@ -407,17 +407,32 @@ def pilots_search(req):
         form = PilotSearchForm(req.POST)
         if form.is_valid():
             name = form.cleaned_data['name']
-
             query = f'Pilot.name={name}'
-            # if 'searched' in req.session and req.session['searched'] == query:
-            #     return HttpResponse('You have searched for the same thing before. Please try again.')
-            # req.session['searched'] = query
+            if 'searched' in req.session:
+                if query in req.session['searched'].keys():
+                    lst = req.session['searched'][query]
+                    print("cache was used")
+                else:
+                    pilots = Pilot.objects.filter(name__icontains=name)
+                    lst = [[{'str': p.name, 'url': f'/pilots/{p.id}'}]
+                           for p in pilots]
+                    if len(req.session['searched'].keys()) > 5:
+                        # removes first added element to cache
+                        (k := next(iter(req.session['searched'])), req.session['searched'].pop(k))
+                    req.session['searched'][query] = pilots
 
-            pilots = Pilot.objects.filter(name__icontains=name)
+            else:
+                req.session['searched'] = {}
+                # make query
+                pilots = Pilot.objects.filter(name__icontains=name)
+                lst = [[{'str': p.name, 'url': f'/pilots/{p.id}'}]
+                       for p in pilots]
+                if len(req.session['searched'].keys()) > 5:
+                    # removes first added element to cache
+                    (k := next(iter(req.session['searched'])), req.session['searched'].pop(k))
+                req.session['searched'][query] = lst
 
-            lst = [[{'str': p.name, 'url': f'/pilots/{p.id}'}]
-                   for p in pilots]
-            ctx = {'header': 'List of Pilots', 'list': lst, 'query': query}
+            ctx = {'header': 'List of Pilots', 'list': lst, 'query': name}
             return render(req, 'list.html', ctx)
     else:
         # If GET (or any other method), create blank form
