@@ -826,7 +826,7 @@ def teamleaders_search(req):
 
             teamleaders = TeamLeader.objects.filter(name__icontains=name)
 
-            lst = [[{'str': tl.name, 'url': f'/teams/{tl.id}'}]
+            lst = [[{'str': tl.name, 'url': f'/teamleaders/{tl.id}'}]
                    for tl in teamleaders]
             ctx = {'header': 'List of Team Leaders', 'list': lst, 'query': query}
             return render(req, 'list.html', ctx)
