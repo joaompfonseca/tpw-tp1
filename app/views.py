@@ -77,9 +77,10 @@ def profile_edit(req):
     if req.method == 'POST':
         form = ProfileForm(req.POST, req.FILES)
         if form.is_valid() or req.POST.get('profile_image') == '':
-            user_profile.first_name = form.cleaned_data['first_name']
-            user_profile.last_name = form.cleaned_data['last_name']
-            user_profile.email = form.cleaned_data['email']
+            user_profile.user.first_name = form.cleaned_data['first_name']
+            user_profile.user.last_name = form.cleaned_data['last_name']
+            user_profile.user.email = form.cleaned_data['email']
+            user_profile.user.save()
             if req.POST.get('profile_image') != '':
                 user_profile.profile_image = form.cleaned_data['profile_image']
             user_profile.biography = form.cleaned_data['biography']
