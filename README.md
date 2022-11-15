@@ -10,6 +10,7 @@ Developed within the scope of the first practical work of Tecnologies and Web
 Programming (2022/2023).
 
 ## Authors
+
 This project was done by:
 
 - André Butuc, 103530
@@ -37,3 +38,15 @@ dependency (see [Installation](#installation) section):
 - The application should be running on [localhost:8000](http://localhost:8000/).
 - Stop the application using `CTRL+C` in terminal.
 - Run `deactivate` in root to exit the virtual environment.
+
+## Public Deployment
+
+- Click [here](https://joaompfonseca.pythonanywhere.com/) to access the application (Python Anywhere).
+
+## Credentials of Created Users
+
+| Role          | Username | Password      |
+|---------------|----------|---------------|
+| Administrator | admin    | admin         |
+| Normal User   | user     | iloveformula1 |
+
