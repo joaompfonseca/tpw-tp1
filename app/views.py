@@ -437,6 +437,12 @@ def pilots_list(req):
     actions = [{'str': 'Search Pilot', 'url': '/pilots/search'}]
     if req.user.is_authenticated and req.user.username == 'admin':
         actions += [{'str': 'New Pilot', 'url': '/pilots/new'}]
+
+    if 'searched' in req.session:
+        print(req.session.keys())
+    else:
+        print("it was cleared")
+
     lst = [[{'str': p.name, 'url': f'/pilots/{p.id}'}] for p in pilots]
 
     ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[
@@ -454,20 +460,28 @@ def pilots_search(req):
             name = form.cleaned_data['name']
             query = f'Pilot.name={name}'
             if 'searched' in req.session:
+                print('I entered searched.')
                 if query in req.session['searched'].keys():
                     lst = req.session['searched'][query]
-                    print("cache was used")
+                    print("I entered cache")
+                    print(req.session['searched'].keys())
                 else:
+                    print("I entered query")
                     pilots = Pilot.objects.filter(name__icontains=name)
                     lst = [[{'str': p.name, 'url': f'/pilots/{p.id}'}]
                            for p in pilots]
-                    if len(req.session['searched'].keys()) > 5:
+                    print(len(req.session['searched'].keys()))
+                    if len(req.session['searched'].keys()) >= 5:
+                        print("I entered removed")
                         # removes first added element to cache
                         (k := next(iter(req.session['searched'])), req.session['searched'].pop(k))
-                    req.session['searched'][query] = pilots
 
+                    req.session['searched'][query] = lst
+                    req.session.save()
+                    print("Just added and saved session")
             else:
-                req.session['searched'] = {}
+                print("I entered have to initialize searched")
+                req.session['searched'] = dict()
                 # make query
                 pilots = Pilot.objects.filter(name__icontains=name)
                 lst = [[{'str': p.name, 'url': f'/pilots/{p.id}'}]
