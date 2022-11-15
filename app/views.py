@@ -48,7 +48,8 @@ def signup(req):
             return redirect('home')
         else:
             ctx = {
-                'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1] if req.user.is_authenticated else None,
+                'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[
+                    -1] if req.user.is_authenticated else None,
                 'form': form}
             return render(req, 'signup.html', ctx)
     else:
@@ -62,7 +63,8 @@ def signup(req):
 # Profile
 def profile(req):
     user_profile = Profile.objects.get(user=get_user(req))
-    ctx = {'image': 'images/profiles/' + user_profile.profile_image.url.split('/')[-1] if req.user.is_authenticated else None,
+    ctx = {'image': 'images/profiles/' + user_profile.profile_image.url.split('/')[
+        -1] if req.user.is_authenticated else None,
            'biography': user_profile.biography,
            'pilots': user_profile.favourite_pilot,
            'teams': user_profile.favourite_team,
@@ -212,7 +214,8 @@ def cars_search(req):
                 lst = [[{'str': c.model, 'url': f'/cars/{c.id}'}] for c in cars]
                 req.session['searched'][query] = lst
             ctx = {
-                'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1] if req.user.is_authenticated else None,
+                'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[
+                    -1] if req.user.is_authenticated else None,
                 'header': 'List of Cars', 'list': lst, 'query': f'Model {model}; Pilot {pilot}'}
             return render(req, 'list.html', ctx)
     else:
@@ -282,27 +285,27 @@ def circuits_search(req):
 
             query = f'Circuit.name={name}'
             if 'searched' in req.session:
-                #print('I entered searched.')
+                # print('I entered searched.')
                 if query in req.session['searched'].keys():
                     lst = req.session['searched'][query]
-                    #print("I entered cache")
-                    #print(req.session['searched'].keys())
+                    # print("I entered cache")
+                    # print(req.session['searched'].keys())
                 else:
-                    #print("I entered query")
+                    # print("I entered query")
                     circuits = Circuit.objects.filter(name__icontains=name)
                     lst = [[{'str': p.name, 'url': f'/circuits/{p.id}'}]
                            for p in circuits]
-                    #print(len(req.session['searched'].keys()))
+                    # print(len(req.session['searched'].keys()))
                     if len(req.session['searched'].keys()) >= 10:
-                        #print("I entered removed")
+                        # print("I entered removed")
                         # removes first added element to cache
                         (k := next(iter(req.session['searched'])), req.session['searched'].pop(k))
 
                     req.session['searched'][query] = lst
                     req.session.save()
-                    #print("Just added and saved session")
+                    # print("Just added and saved session")
             else:
-                #print("I entered have to initialize searched")
+                # print("I entered have to initialize searched")
                 req.session['searched'] = dict()
                 # make query
                 circuits = Circuit.objects.filter(name__icontains=name)
@@ -311,7 +314,8 @@ def circuits_search(req):
                 req.session['searched'][query] = lst
 
             ctx = {
-                'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1] if req.user.is_authenticated else None,
+                'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[
+                    -1] if req.user.is_authenticated else None,
                 'header': 'List of Circuits', 'list': lst, 'query': name}
             return render(req, 'list.html', ctx)
     else:
@@ -439,28 +443,28 @@ def countries_search(req):
 
             query = f'Country.designation={designation}'
             if 'searched' in req.session:
-                #print('I entered searched.')
+                # print('I entered searched.')
                 if query in req.session['searched'].keys():
                     lst = req.session['searched'][query]
-                    #print("I entered cache")
-                    #print(req.session['searched'].keys())
+                    # print("I entered cache")
+                    # print(req.session['searched'].keys())
                 else:
-                    #print("I entered query")
+                    # print("I entered query")
                     countries = Country.objects.filter(designation__icontains=designation)
 
                     lst = [[{'str': c.designation, 'url': f'/countries/{c.id}'}]
                            for c in countries]
-                    #print(len(req.session['searched'].keys()))
+                    # print(len(req.session['searched'].keys()))
                     if len(req.session['searched'].keys()) >= 10:
-                        #print("I entered removed")
+                        # print("I entered removed")
                         # removes first added element to cache
                         (k := next(iter(req.session['searched'])), req.session['searched'].pop(k))
 
                     req.session['searched'][query] = lst
                     req.session.save()
-                    #print("Just added and saved session")
+                    # print("Just added and saved session")
             else:
-                #print("I entered have to initialize searched")
+                # print("I entered have to initialize searched")
                 req.session['searched'] = dict()
                 # make query
                 countries = Country.objects.filter(designation__icontains=designation)
@@ -470,7 +474,8 @@ def countries_search(req):
                 req.session['searched'][query] = lst
 
             ctx = {
-                'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1] if req.user.is_authenticated else None,
+                'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[
+                    -1] if req.user.is_authenticated else None,
                 'header': 'Countries', 'list': lst, 'query': designation}
             return render(req, 'list.html', ctx)
     else:
@@ -530,27 +535,27 @@ def pilots_search(req):
             name = form.cleaned_data['name']
             query = f'Pilot.name={name}'
             if 'searched' in req.session:
-                #print('I entered searched.')
+                # print('I entered searched.')
                 if query in req.session['searched'].keys():
                     lst = req.session['searched'][query]
-                    #print("I entered cache")
-                    #print(req.session['searched'].keys())
+                    # print("I entered cache")
+                    # print(req.session['searched'].keys())
                 else:
-                    #print("I entered query")
+                    # print("I entered query")
                     pilots = Pilot.objects.filter(name__icontains=name)
                     lst = [[{'str': p.name, 'url': f'/pilots/{p.id}'}]
                            for p in pilots]
-                    #print(len(req.session['searched'].keys()))
+                    # print(len(req.session['searched'].keys()))
                     if len(req.session['searched'].keys()) >= 10:
-                        #print("I entered removed")
+                        # print("I entered removed")
                         # removes first added element to cache
                         (k := next(iter(req.session['searched'])), req.session['searched'].pop(k))
 
                     req.session['searched'][query] = lst
                     req.session.save()
-                    #print("Just added and saved session")
+                    # print("Just added and saved session")
             else:
-                #print("I entered have to initialize searched")
+                # print("I entered have to initialize searched")
                 req.session['searched'] = dict()
                 # make query
                 pilots = Pilot.objects.filter(name__icontains=name)
@@ -559,7 +564,8 @@ def pilots_search(req):
                 req.session['searched'][query] = lst
 
             ctx = {
-                'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1] if req.user.is_authenticated else None,
+                'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[
+                    -1] if req.user.is_authenticated else None,
                 'header': 'List of Pilots', 'list': lst, 'query': name}
             return render(req, 'list.html', ctx)
     else:
@@ -608,8 +614,7 @@ def pilots_new(req):
                 championships=form.cleaned_data['championships'],
                 contract=form.cleaned_data['contract'],
                 entry_year=form.cleaned_data['entry_year'],
-                team=form.cleaned_data['team'],
-                team_leader=form.cleaned_data['team_leader'],
+                team=form.cleaned_data['team']
             )
             pilot.country.set(form.cleaned_data['country'])
 
@@ -686,27 +691,27 @@ def races_search(req):
 
             query = f'Race.name={name}'
             if 'searched' in req.session:
-                #print('I entered searched.')
+                # print('I entered searched.')
                 if query in req.session['searched'].keys():
                     lst = req.session['searched'][query]
-                    #print("I entered cache")
-                    #print(req.session['searched'].keys())
+                    # print("I entered cache")
+                    # print(req.session['searched'].keys())
                 else:
-                    #print("I entered query")
+                    # print("I entered query")
                     races = Race.objects.filter(name__icontains=name)
                     lst = [[{'str': r.name, 'url': f'/races/{r.id}'}]
                            for r in races]
-                    #print(len(req.session['searched'].keys()))
+                    # print(len(req.session['searched'].keys()))
                     if len(req.session['searched'].keys()) >= 10:
-                        #print("I entered removed")
+                        # print("I entered removed")
                         # removes first added element to cache
                         (k := next(iter(req.session['searched'])), req.session['searched'].pop(k))
 
                     req.session['searched'][query] = lst
                     req.session.save()
-                    #print("Just added and saved session")
+                    # print("Just added and saved session")
             else:
-                #print("I entered have to initialize searched")
+                # print("I entered have to initialize searched")
                 req.session['searched'] = dict()
                 # make query
                 races = Race.objects.filter(name__icontains=name)
@@ -714,9 +719,9 @@ def races_search(req):
                        for r in races]
                 req.session['searched'][query] = lst
 
-
             ctx = {
-                'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1] if req.user.is_authenticated else None,
+                'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[
+                    -1] if req.user.is_authenticated else None,
                 'header': 'List of Races', 'list': lst, 'query': name}
             return render(req, 'list.html', ctx)
     else:
@@ -914,27 +919,27 @@ def teams_search(req):
             query = f'Team.name={name}'
 
             if 'searched' in req.session:
-                #print('I entered searched.')
+                # print('I entered searched.')
                 if query in req.session['searched'].keys():
                     lst = req.session['searched'][query]
-                    #print("I entered cache")
-                    #print(req.session['searched'].keys())
+                    # print("I entered cache")
+                    # print(req.session['searched'].keys())
                 else:
-                    #print("I entered query")
+                    # print("I entered query")
                     teams = Team.objects.filter(name__icontains=name)
                     lst = [[{'str': t.name, 'url': f'/teams/{t.id}'}]
                            for t in teams]
-                    #print(len(req.session['searched'].keys()))
+                    # print(len(req.session['searched'].keys()))
                     if len(req.session['searched'].keys()) >= 10:
-                        #print("I entered removed")
+                        # print("I entered removed")
                         # removes first added element to cache
                         (k := next(iter(req.session['searched'])), req.session['searched'].pop(k))
 
                     req.session['searched'][query] = lst
                     req.session.save()
-                    #print("Just added and saved session")
+                    # print("Just added and saved session")
             else:
-                #print("I entered have to initialize searched")
+                # print("I entered have to initialize searched")
                 req.session['searched'] = dict()
                 # make query
                 teams = Team.objects.filter(name__icontains=name)
@@ -942,9 +947,9 @@ def teams_search(req):
                        for t in teams]
                 req.session['searched'][query] = lst
 
-
             ctx = {
-                'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1] if req.user.is_authenticated else None,
+                'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[
+                    -1] if req.user.is_authenticated else None,
                 'header': 'List of Teams', 'list': lst, 'query': name}
             return render(req, 'list.html', ctx)
     else:
@@ -973,14 +978,12 @@ def teams_get(req, _id):
 
     pilots = Pilot.objects.filter(team=team)
 
-    team_leader = TeamLeader.objects.get(team=team)
-
     team_points = sum([p.total_points for p in pilots])
 
     ctx = {'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[
         -1] if req.user.is_authenticated else None,
-           'header': 'Team Details', 'team': team, 'team_image': image, 'pilots': pilots, 'team_leader': team_leader
-        , 'team_points': team_points, 'favourite': faved, 'dislike_image': dislike_image, 'like_image': like_image}
+           'header': 'Team Details', 'team': team, 'team_image': image, 'pilots': pilots, 'team_points': team_points,
+           'favourite': faved, 'dislike_image': dislike_image, 'like_image': like_image}
     return render(req, 'team.html', ctx)
 
 
@@ -1055,26 +1058,26 @@ def teamleaders_search(req):
 
             query = f'TeamLeader.name={name}'
             if 'searched' in req.session:
-                #print('I entered searched.')
+                # print('I entered searched.')
                 if query in req.session['searched'].keys():
                     lst = req.session['searched'][query]
-                    #print("I entered cache")
-                    #print(req.session['searched'].keys())
+                    # print("I entered cache")
+                    # print(req.session['searched'].keys())
                 else:
-                    #print("I entered query")
+                    # print("I entered query")
                     teamleaders = TeamLeader.objects.filter(name__icontains=name)
 
                     lst = [[{'str': tl.name, 'url': f'/teamleaders/{tl.id}'}]
                            for tl in teamleaders]
-                    #print(len(req.session['searched'].keys()))
+                    # print(len(req.session['searched'].keys()))
                     if len(req.session['searched'].keys()) >= 10:
-                        #print("I entered removed")
+                        # print("I entered removed")
                         # removes first added element to cache
                         (k := next(iter(req.session['searched'])), req.session['searched'].pop(k))
 
                     req.session['searched'][query] = lst
                     req.session.save()
-                    #print("Just added and saved session")
+                    # print("Just added and saved session")
             else:
                 print("I entered have to initialize searched")
                 req.session['searched'] = dict()
@@ -1085,7 +1088,8 @@ def teamleaders_search(req):
                        for tl in teamleaders]
                 req.session['searched'][query] = lst
             ctx = {
-                'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[-1] if req.user.is_authenticated else None,
+                'image': 'images/profiles/' + Profile.objects.get(user=get_user(req)).profile_image.url.split('/')[
+                    -1] if req.user.is_authenticated else None,
                 'header': 'List of Team Leaders', 'list': lst, 'query': name}
             return render(req, 'list.html', ctx)
     else:
@@ -1113,7 +1117,7 @@ def teamleaders_new(req):
     if req.method == 'POST':
         form = TeamLeaderForm(req.POST)
         if form.is_valid():
-            Team.objects.create(
+            TeamLeader.objects.create(
                 name=form.cleaned_data['name'],
                 team=form.cleaned_data['team']
             )
